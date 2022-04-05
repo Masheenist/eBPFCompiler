@@ -1,0 +1,3 @@
+# assignment to an expression
+x = 7 + 3
+print x + 10

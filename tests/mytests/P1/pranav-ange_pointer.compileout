@@ -1,0 +1,90 @@
+
+Test File [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/pranav-ange_pointer.py]
+- - - - - - - -
+a = [4,3,5]
+b = a
+b[0] = 5  
+print a- - - - - - - -
+explicate Module(None, Stmt([Assign([AssName('a', 'OP_ASSIGN')], List([InjectFrom(Const(0), Const(4)), InjectFrom(Const(0), Const(3)), InjectFrom(Const(0), Const(5))])), Assign([AssName('b', 'OP_ASSIGN')], Name('a')), Discard(CallFunc('set_subscript', [Name('b'), InjectFrom(Const(0), Const(0)), InjectFrom(Const(0), Const(5))], None, None)), Discard(CallFunc('print_any', [Name('a')], None, None))]))
+
+final assembly file [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/pranav-ange_pointer.py] :
+.globl main
+main:
+	pushl %ebp
+	movl %esp, %ebp
+	movl %ebx, -4(%ebp)
+	movl %edi, -8(%ebp)
+	movl %esi, -12(%ebp)
+	subl $16, %esp
+	movl $4, %edi
+	sall $2, %edi
+	orl $0, %edi
+	movl $3, %ebx
+	sall $2, %ebx
+	orl $0, %ebx
+	movl $5, -4(%ebp)
+	sall $2, -4(%ebp)
+	orl $0, -4(%ebp)
+	movl $3, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %eax
+	call create_list
+	addl $4, %esp
+	movl %eax, %esi
+	addl $3, %esi
+	movl $0, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %edi
+	pushl %eax
+	pushl %esi
+	call set_subscript
+	addl $12, %esp
+	movl $1, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %ebx
+	pushl %eax
+	pushl %esi
+	call set_subscript
+	addl $12, %esp
+	movl $2, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl -4(%ebp)
+	pushl %eax
+	pushl %esi
+	call set_subscript
+	addl $12, %esp
+	movl %esi, %ebx
+	movl %ebx, %edx
+	movl $0, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl $5, %ecx
+	sall $2, %ecx
+	orl $0, %ecx
+	pushl %ecx
+	pushl %eax
+	pushl %edx
+	call set_subscript
+	addl $12, %esp
+	pushl %ebx
+	call print_any
+	addl $4, %esp
+	movl -12(%ebp), %esi
+	movl -8(%ebp), %edi
+	movl -4(%ebp), %ebx
+	movl $0, %eax
+	leave
+	ret
+
+
+
+input: 
+
+
+output: 
+[5, 3, 5]
+

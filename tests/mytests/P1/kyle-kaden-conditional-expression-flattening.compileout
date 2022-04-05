@@ -1,0 +1,1370 @@
+
+Test File [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/kyle-kaden-conditional-expression-flattening.py]
+- - - - - - - -
+print 1 + 2 + 3 if 10 + 5 == 5 + 10 else 5 + 6
+print 1 + 2 + 3 if 10 + 5 != 5 + 10 else 5 + 6- - - - - - - -
+explicate Module(None, Stmt([Discard(CallFunc('print_any', [IfExp(Let(Name('0'), Let(Name('1'), Let(Name('7'), InjectFrom(Const(0), Const(10)), Let(Name('8'), InjectFrom(Const(0), Const(5)), IfExp(Let(Name('12'), Compare(GetTag(Name('7')), [('==', Const(3))]), IfExp(Name('12'), Compare(GetTag(Name('8')), [('==', Const(3))]), Name('12'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('7')), ProjectTo(Const(3), Name('8'))], None, None)), IfExp(Let(Name('11'), Let(Name('9'), Compare(GetTag(Name('7')), [('==', Const(0))]), IfExp(Name('9'), Compare(GetTag(Name('8')), [('==', Const(0))]), Name('9'))), IfExp(Not(Name('11')), Let(Name('10'), Compare(GetTag(Name('7')), [('==', Const(1))]), IfExp(Name('10'), Compare(GetTag(Name('8')), [('==', Const(1))]), Name('10'))), Name('11'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('7')), ProjectTo(Const(0), Name('8'))))), CallFunc('abort', [], None, None))))), Let(Name('2'), Let(Name('13'), InjectFrom(Const(0), Const(5)), Let(Name('14'), InjectFrom(Const(0), Const(10)), IfExp(Let(Name('18'), Compare(GetTag(Name('13')), [('==', Const(3))]), IfExp(Name('18'), Compare(GetTag(Name('14')), [('==', Const(3))]), Name('18'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('13')), ProjectTo(Const(3), Name('14'))], None, None)), IfExp(Let(Name('17'), Let(Name('15'), Compare(GetTag(Name('13')), [('==', Const(0))]), IfExp(Name('15'), Compare(GetTag(Name('14')), [('==', Const(0))]), Name('15'))), IfExp(Not(Name('17')), Let(Name('16'), Compare(GetTag(Name('13')), [('==', Const(1))]), IfExp(Name('16'), Compare(GetTag(Name('14')), [('==', Const(1))]), Name('16'))), Name('17'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('13')), ProjectTo(Const(0), Name('14'))))), CallFunc('abort', [], None, None))))), IfExp(Let(Name('6'), Compare(GetTag(Name('1')), [('==', Const(3))]), IfExp(Name('6'), Compare(GetTag(Name('2')), [('==', Const(3))]), Name('6'))), InjectFrom(Const(1), CallFunc('equal', [ProjectTo(Const(3), Name('1')), ProjectTo(Const(3), Name('2'))], None, None)), IfExp(Let(Name('5'), Let(Name('3'), Compare(GetTag(Name('1')), [('==', Const(0))]), IfExp(Name('3'), Compare(GetTag(Name('2')), [('==', Const(0))]), Name('3'))), IfExp(Not(Name('5')), Let(Name('4'), Compare(GetTag(Name('1')), [('==', Const(1))]), IfExp(Name('4'), Compare(GetTag(Name('2')), [('==', Const(1))]), Name('4'))), Name('5'))), InjectFrom(Const(1), Compare(ProjectTo(Const(0), Name('1')), [('==', ProjectTo(Const(0), Name('2')))])), CallFunc('abort', [], None, None))))), IfExp(Compare(GetTag(Name('0')), [('==', Const(3))]), Not(Let(Name('20'), CallFunc('equal', [ProjectTo(Const(3), Name('0')), ProjectTo(Const(3), List([]))], None, None), IfExp(Not(Name('20')), CallFunc('equal', [ProjectTo(Const(3), Name('0')), ProjectTo(Const(3), Dict([]))], None, None), Name('20')))), IfExp(Let(Name('19'), Compare(GetTag(Name('0')), [('==', Const(0))]), IfExp(Not(Name('19')), Compare(GetTag(Name('0')), [('==', Const(1))]), Name('19'))), ProjectTo(Const(1), Name('0')), CallFunc('abort', [], None, None)))), Let(Name('21'), Let(Name('27'), InjectFrom(Const(0), Const(1)), Let(Name('28'), InjectFrom(Const(0), Const(2)), IfExp(Let(Name('32'), Compare(GetTag(Name('27')), [('==', Const(3))]), IfExp(Name('32'), Compare(GetTag(Name('28')), [('==', Const(3))]), Name('32'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('27')), ProjectTo(Const(3), Name('28'))], None, None)), IfExp(Let(Name('31'), Let(Name('29'), Compare(GetTag(Name('27')), [('==', Const(0))]), IfExp(Name('29'), Compare(GetTag(Name('28')), [('==', Const(0))]), Name('29'))), IfExp(Not(Name('31')), Let(Name('30'), Compare(GetTag(Name('27')), [('==', Const(1))]), IfExp(Name('30'), Compare(GetTag(Name('28')), [('==', Const(1))]), Name('30'))), Name('31'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('27')), ProjectTo(Const(0), Name('28'))))), CallFunc('abort', [], None, None))))), Let(Name('22'), InjectFrom(Const(0), Const(3)), IfExp(Let(Name('26'), Compare(GetTag(Name('21')), [('==', Const(3))]), IfExp(Name('26'), Compare(GetTag(Name('22')), [('==', Const(3))]), Name('26'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('21')), ProjectTo(Const(3), Name('22'))], None, None)), IfExp(Let(Name('25'), Let(Name('23'), Compare(GetTag(Name('21')), [('==', Const(0))]), IfExp(Name('23'), Compare(GetTag(Name('22')), [('==', Const(0))]), Name('23'))), IfExp(Not(Name('25')), Let(Name('24'), Compare(GetTag(Name('21')), [('==', Const(1))]), IfExp(Name('24'), Compare(GetTag(Name('22')), [('==', Const(1))]), Name('24'))), Name('25'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('21')), ProjectTo(Const(0), Name('22'))))), CallFunc('abort', [], None, None))))), Let(Name('33'), InjectFrom(Const(0), Const(5)), Let(Name('34'), InjectFrom(Const(0), Const(6)), IfExp(Let(Name('38'), Compare(GetTag(Name('33')), [('==', Const(3))]), IfExp(Name('38'), Compare(GetTag(Name('34')), [('==', Const(3))]), Name('38'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('33')), ProjectTo(Const(3), Name('34'))], None, None)), IfExp(Let(Name('37'), Let(Name('35'), Compare(GetTag(Name('33')), [('==', Const(0))]), IfExp(Name('35'), Compare(GetTag(Name('34')), [('==', Const(0))]), Name('35'))), IfExp(Not(Name('37')), Let(Name('36'), Compare(GetTag(Name('33')), [('==', Const(1))]), IfExp(Name('36'), Compare(GetTag(Name('34')), [('==', Const(1))]), Name('36'))), Name('37'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('33')), ProjectTo(Const(0), Name('34'))))), CallFunc('abort', [], None, None))))))], None, None)), Discard(CallFunc('print_any', [IfExp(Let(Name('39'), Let(Name('40'), Let(Name('46'), InjectFrom(Const(0), Const(10)), Let(Name('47'), InjectFrom(Const(0), Const(5)), IfExp(Let(Name('51'), Compare(GetTag(Name('46')), [('==', Const(3))]), IfExp(Name('51'), Compare(GetTag(Name('47')), [('==', Const(3))]), Name('51'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('46')), ProjectTo(Const(3), Name('47'))], None, None)), IfExp(Let(Name('50'), Let(Name('48'), Compare(GetTag(Name('46')), [('==', Const(0))]), IfExp(Name('48'), Compare(GetTag(Name('47')), [('==', Const(0))]), Name('48'))), IfExp(Not(Name('50')), Let(Name('49'), Compare(GetTag(Name('46')), [('==', Const(1))]), IfExp(Name('49'), Compare(GetTag(Name('47')), [('==', Const(1))]), Name('49'))), Name('50'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('46')), ProjectTo(Const(0), Name('47'))))), CallFunc('abort', [], None, None))))), Let(Name('41'), Let(Name('52'), InjectFrom(Const(0), Const(5)), Let(Name('53'), InjectFrom(Const(0), Const(10)), IfExp(Let(Name('57'), Compare(GetTag(Name('52')), [('==', Const(3))]), IfExp(Name('57'), Compare(GetTag(Name('53')), [('==', Const(3))]), Name('57'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('52')), ProjectTo(Const(3), Name('53'))], None, None)), IfExp(Let(Name('56'), Let(Name('54'), Compare(GetTag(Name('52')), [('==', Const(0))]), IfExp(Name('54'), Compare(GetTag(Name('53')), [('==', Const(0))]), Name('54'))), IfExp(Not(Name('56')), Let(Name('55'), Compare(GetTag(Name('52')), [('==', Const(1))]), IfExp(Name('55'), Compare(GetTag(Name('53')), [('==', Const(1))]), Name('55'))), Name('56'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('52')), ProjectTo(Const(0), Name('53'))))), CallFunc('abort', [], None, None))))), IfExp(Let(Name('45'), Compare(GetTag(Name('40')), [('==', Const(3))]), IfExp(Name('45'), Compare(GetTag(Name('41')), [('==', Const(3))]), Name('45'))), InjectFrom(Const(1), CallFunc('equal', [ProjectTo(Const(3), Name('40')), ProjectTo(Const(3), Name('41'))], None, None)), IfExp(Let(Name('44'), Let(Name('42'), Compare(GetTag(Name('40')), [('==', Const(0))]), IfExp(Name('42'), Compare(GetTag(Name('41')), [('==', Const(0))]), Name('42'))), IfExp(Not(Name('44')), Let(Name('43'), Compare(GetTag(Name('40')), [('==', Const(1))]), IfExp(Name('43'), Compare(GetTag(Name('41')), [('==', Const(1))]), Name('43'))), Name('44'))), InjectFrom(Const(1), Compare(ProjectTo(Const(0), Name('40')), [('!=', ProjectTo(Const(0), Name('41')))])), CallFunc('abort', [], None, None))))), IfExp(Compare(GetTag(Name('39')), [('==', Const(3))]), Not(Let(Name('59'), CallFunc('equal', [ProjectTo(Const(3), Name('39')), ProjectTo(Const(3), List([]))], None, None), IfExp(Not(Name('59')), CallFunc('equal', [ProjectTo(Const(3), Name('39')), ProjectTo(Const(3), Dict([]))], None, None), Name('59')))), IfExp(Let(Name('58'), Compare(GetTag(Name('39')), [('==', Const(0))]), IfExp(Not(Name('58')), Compare(GetTag(Name('39')), [('==', Const(1))]), Name('58'))), ProjectTo(Const(1), Name('39')), CallFunc('abort', [], None, None)))), Let(Name('60'), Let(Name('66'), InjectFrom(Const(0), Const(1)), Let(Name('67'), InjectFrom(Const(0), Const(2)), IfExp(Let(Name('71'), Compare(GetTag(Name('66')), [('==', Const(3))]), IfExp(Name('71'), Compare(GetTag(Name('67')), [('==', Const(3))]), Name('71'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('66')), ProjectTo(Const(3), Name('67'))], None, None)), IfExp(Let(Name('70'), Let(Name('68'), Compare(GetTag(Name('66')), [('==', Const(0))]), IfExp(Name('68'), Compare(GetTag(Name('67')), [('==', Const(0))]), Name('68'))), IfExp(Not(Name('70')), Let(Name('69'), Compare(GetTag(Name('66')), [('==', Const(1))]), IfExp(Name('69'), Compare(GetTag(Name('67')), [('==', Const(1))]), Name('69'))), Name('70'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('66')), ProjectTo(Const(0), Name('67'))))), CallFunc('abort', [], None, None))))), Let(Name('61'), InjectFrom(Const(0), Const(3)), IfExp(Let(Name('65'), Compare(GetTag(Name('60')), [('==', Const(3))]), IfExp(Name('65'), Compare(GetTag(Name('61')), [('==', Const(3))]), Name('65'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('60')), ProjectTo(Const(3), Name('61'))], None, None)), IfExp(Let(Name('64'), Let(Name('62'), Compare(GetTag(Name('60')), [('==', Const(0))]), IfExp(Name('62'), Compare(GetTag(Name('61')), [('==', Const(0))]), Name('62'))), IfExp(Not(Name('64')), Let(Name('63'), Compare(GetTag(Name('60')), [('==', Const(1))]), IfExp(Name('63'), Compare(GetTag(Name('61')), [('==', Const(1))]), Name('63'))), Name('64'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('60')), ProjectTo(Const(0), Name('61'))))), CallFunc('abort', [], None, None))))), Let(Name('72'), InjectFrom(Const(0), Const(5)), Let(Name('73'), InjectFrom(Const(0), Const(6)), IfExp(Let(Name('77'), Compare(GetTag(Name('72')), [('==', Const(3))]), IfExp(Name('77'), Compare(GetTag(Name('73')), [('==', Const(3))]), Name('77'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('72')), ProjectTo(Const(3), Name('73'))], None, None)), IfExp(Let(Name('76'), Let(Name('74'), Compare(GetTag(Name('72')), [('==', Const(0))]), IfExp(Name('74'), Compare(GetTag(Name('73')), [('==', Const(0))]), Name('74'))), IfExp(Not(Name('76')), Let(Name('75'), Compare(GetTag(Name('72')), [('==', Const(1))]), IfExp(Name('75'), Compare(GetTag(Name('73')), [('==', Const(1))]), Name('75'))), Name('76'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('72')), ProjectTo(Const(0), Name('73'))))), CallFunc('abort', [], None, None))))))], None, None))]))
+
+final assembly file [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/kyle-kaden-conditional-expression-flattening.py] :
+.globl main
+main:
+	pushl %ebp
+	movl %esp, %ebp
+	movl %ebx, -52(%ebp)
+	movl %edi, -56(%ebp)
+	movl %esi, -60(%ebp)
+	subl $64, %esp
+	movl $10, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -36(%ebp)
+	movl $5, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -32(%ebp)
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_0
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_1
+	label_0: 
+	label_1: 
+	cmpl $0, %eax
+	je label_2
+	movl -36(%ebp), %eax
+	andl $-4, %eax
+	movl -32(%ebp), %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_3
+	label_2: 
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %edx
+	cmpl $0, %edx
+	je label_4
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_5
+	label_4: 
+	movl %edx, %eax
+	label_5: 
+	movl %eax, %edx
+	cmpl $0, %edx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_6
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	je label_8
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_9
+	label_8: 
+	movl %ecx, %eax
+	label_9: 
+	jmp label_7
+	label_6: 
+	movl %edx, %eax
+	label_7: 
+	cmpl $0, %eax
+	je label_10
+	movl -36(%ebp), %ecx
+	sarl $2, %ecx
+	movl -32(%ebp), %eax
+	sarl $2, %eax
+	addl %eax, %ecx
+	movl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_11
+	label_10: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_11: 
+	label_3: 
+	movl %ecx, -32(%ebp)
+	movl $5, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -36(%ebp)
+	movl $10, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -40(%ebp)
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_12
+	movl -40(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_13
+	label_12: 
+	label_13: 
+	cmpl $0, %eax
+	je label_14
+	movl -36(%ebp), %eax
+	andl $-4, %eax
+	movl -40(%ebp), %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_15
+	label_14: 
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_16
+	movl -40(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	jmp label_17
+	label_16: 
+	movl %eax, %ecx
+	label_17: 
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_18
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, -52(%ebp)
+	cmpl $0, -52(%ebp)
+	je label_20
+	movl -40(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_21
+	label_20: 
+	movl -52(%ebp), %eax
+	label_21: 
+	jmp label_19
+	label_18: 
+	movl %ecx, %eax
+	label_19: 
+	cmpl $0, %eax
+	je label_22
+	movl -36(%ebp), %eax
+	sarl $2, %eax
+	movl -40(%ebp), %ecx
+	sarl $2, %ecx
+	addl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_23
+	label_22: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_23: 
+	label_15: 
+	movl %ecx, -36(%ebp)
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_24
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_25
+	label_24: 
+	label_25: 
+	cmpl $0, %eax
+	je label_26
+	movl -32(%ebp), %eax
+	andl $-4, %eax
+	movl -36(%ebp), %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call equal
+	addl $8, %esp
+	sall $2, %eax
+	orl $1, %eax
+	movl %eax, %ecx
+	jmp label_27
+	label_26: 
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	je label_28
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_29
+	label_28: 
+	movl %ecx, %eax
+	label_29: 
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_30
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, -44(%ebp)
+	cmpl $0, -44(%ebp)
+	je label_32
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_33
+	label_32: 
+	movl -44(%ebp), %eax
+	label_33: 
+	jmp label_31
+	label_30: 
+	movl %ecx, %eax
+	label_31: 
+	cmpl $0, %eax
+	je label_34
+	movl -32(%ebp), %eax
+	sarl $2, %eax
+	movl -36(%ebp), %ecx
+	sarl $2, %ecx
+	cmpl %ecx, %eax
+	sete %al
+	movzbl %al, %eax
+	sall $2, %eax
+	orl $1, %eax
+	movl %eax, %ecx
+	jmp label_35
+	label_34: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_35: 
+	label_27: 
+	movl %ecx, -32(%ebp)
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_36
+	movl -32(%ebp), %eax
+	movl %eax, -36(%ebp)
+	andl $-4, -36(%ebp)
+	movl $0, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %eax
+	call create_list
+	addl $4, %esp
+	addl $3, %eax
+	andl $-4, %eax
+	pushl %eax
+	pushl -36(%ebp)
+	call equal
+	addl $8, %esp
+	movl %eax, -48(%ebp)
+	cmpl $0, -48(%ebp)
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_38
+	movl -32(%ebp), %eax
+	movl %eax, -32(%ebp)
+	andl $-4, -32(%ebp)
+	call create_dict
+	addl $0, %esp
+	addl $3, %eax
+	andl $-4, %eax
+	pushl %eax
+	pushl -32(%ebp)
+	call equal
+	addl $8, %esp
+	movl %eax, %ecx
+	jmp label_39
+	label_38: 
+	movl -48(%ebp), %ecx
+	label_39: 
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	jmp label_37
+	label_36: 
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_40
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_41
+	label_40: 
+	movl %ecx, %eax
+	label_41: 
+	cmpl $0, %eax
+	je label_42
+	movl -32(%ebp), %eax
+	sarl $2, %eax
+	movl %eax, %ecx
+	jmp label_43
+	label_42: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_43: 
+	movl %ecx, %eax
+	label_37: 
+	cmpl $0, %eax
+	je label_44
+	movl $1, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -28(%ebp)
+	movl $2, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -32(%ebp)
+	movl -28(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_46
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_47
+	label_46: 
+	label_47: 
+	cmpl $0, %eax
+	je label_48
+	movl -28(%ebp), %eax
+	andl $-4, %eax
+	movl -32(%ebp), %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_49
+	label_48: 
+	movl -28(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_50
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	jmp label_51
+	label_50: 
+	movl %eax, %ecx
+	label_51: 
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_52
+	movl -28(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, -12(%ebp)
+	cmpl $0, -12(%ebp)
+	je label_54
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_55
+	label_54: 
+	movl -12(%ebp), %eax
+	label_55: 
+	jmp label_53
+	label_52: 
+	movl %ecx, %eax
+	label_53: 
+	cmpl $0, %eax
+	je label_56
+	movl -28(%ebp), %eax
+	sarl $2, %eax
+	movl -32(%ebp), %ecx
+	sarl $2, %ecx
+	addl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_57
+	label_56: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_57: 
+	label_49: 
+	movl %ecx, -28(%ebp)
+	movl $3, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -12(%ebp)
+	movl -28(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_58
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_59
+	label_58: 
+	label_59: 
+	cmpl $0, %eax
+	je label_60
+	movl -28(%ebp), %eax
+	andl $-4, %eax
+	movl -12(%ebp), %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_61
+	label_60: 
+	movl -28(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	je label_62
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_63
+	label_62: 
+	movl %ecx, %eax
+	label_63: 
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_64
+	movl -28(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ebx
+	cmpl $0, %ebx
+	je label_66
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_67
+	label_66: 
+	movl %ebx, %eax
+	label_67: 
+	jmp label_65
+	label_64: 
+	movl %ecx, %eax
+	label_65: 
+	cmpl $0, %eax
+	je label_68
+	movl -28(%ebp), %eax
+	sarl $2, %eax
+	movl -12(%ebp), %ecx
+	sarl $2, %ecx
+	addl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_69
+	label_68: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_69: 
+	label_61: 
+	jmp label_45
+	label_44: 
+	movl $5, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -32(%ebp)
+	movl $6, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -36(%ebp)
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_70
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_71
+	label_70: 
+	label_71: 
+	cmpl $0, %eax
+	je label_72
+	movl -32(%ebp), %eax
+	andl $-4, %eax
+	movl -36(%ebp), %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_73
+	label_72: 
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_74
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	jmp label_75
+	label_74: 
+	movl %eax, %ecx
+	label_75: 
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_76
+	movl -32(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ebx
+	cmpl $0, %ebx
+	je label_78
+	movl -36(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_79
+	label_78: 
+	movl %ebx, %eax
+	label_79: 
+	jmp label_77
+	label_76: 
+	movl %ecx, %eax
+	label_77: 
+	cmpl $0, %eax
+	je label_80
+	movl -32(%ebp), %ecx
+	sarl $2, %ecx
+	movl -36(%ebp), %eax
+	sarl $2, %eax
+	addl %eax, %ecx
+	movl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_81
+	label_80: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_81: 
+	label_73: 
+	label_45: 
+	pushl %ecx
+	call print_any
+	addl $4, %esp
+	movl $10, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -12(%ebp)
+	movl $5, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ebx
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_82
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_83
+	label_82: 
+	label_83: 
+	cmpl $0, %eax
+	je label_84
+	movl -12(%ebp), %eax
+	andl $-4, %eax
+	movl %ebx, %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_85
+	label_84: 
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_86
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	jmp label_87
+	label_86: 
+	movl %eax, %ecx
+	label_87: 
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_88
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, -16(%ebp)
+	cmpl $0, -16(%ebp)
+	je label_90
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_91
+	label_90: 
+	movl -16(%ebp), %eax
+	label_91: 
+	jmp label_89
+	label_88: 
+	movl %ecx, %eax
+	label_89: 
+	cmpl $0, %eax
+	je label_92
+	movl -12(%ebp), %ecx
+	sarl $2, %ecx
+	movl %ebx, %eax
+	sarl $2, %eax
+	addl %eax, %ecx
+	movl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_93
+	label_92: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_93: 
+	label_85: 
+	movl %ecx, -12(%ebp)
+	movl $5, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ebx
+	movl $10, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -16(%ebp)
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_94
+	movl -16(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_95
+	label_94: 
+	label_95: 
+	cmpl $0, %eax
+	je label_96
+	movl %ebx, %eax
+	andl $-4, %eax
+	movl -16(%ebp), %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_97
+	label_96: 
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	je label_98
+	movl -16(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_99
+	label_98: 
+	movl %ecx, %eax
+	label_99: 
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_100
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, -20(%ebp)
+	cmpl $0, -20(%ebp)
+	je label_102
+	movl -16(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_103
+	label_102: 
+	movl -20(%ebp), %eax
+	label_103: 
+	jmp label_101
+	label_100: 
+	movl %ecx, %eax
+	label_101: 
+	cmpl $0, %eax
+	je label_104
+	movl %ebx, %eax
+	sarl $2, %eax
+	movl -16(%ebp), %ecx
+	sarl $2, %ecx
+	addl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_105
+	label_104: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_105: 
+	label_97: 
+	movl %ecx, %ebx
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_106
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_107
+	label_106: 
+	label_107: 
+	cmpl $0, %eax
+	je label_108
+	movl -12(%ebp), %eax
+	andl $-4, %eax
+	movl %ebx, %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call equal
+	addl $8, %esp
+	sall $2, %eax
+	orl $1, %eax
+	movl %eax, %ecx
+	jmp label_109
+	label_108: 
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	je label_110
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_111
+	label_110: 
+	movl %ecx, %eax
+	label_111: 
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_112
+	movl -12(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %edi
+	cmpl $0, %edi
+	je label_114
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_115
+	label_114: 
+	movl %edi, %eax
+	label_115: 
+	jmp label_113
+	label_112: 
+	movl %ecx, %eax
+	label_113: 
+	cmpl $0, %eax
+	je label_116
+	movl -12(%ebp), %eax
+	sarl $2, %eax
+	movl %ebx, %ecx
+	sarl $2, %ecx
+	cmpl %eax, %ecx
+	setne %al
+	movzbl %al, %eax
+	sall $2, %eax
+	orl $1, %eax
+	movl %eax, %ecx
+	jmp label_117
+	label_116: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_117: 
+	label_109: 
+	movl %ecx, %ebx
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_118
+	movl %ebx, %edi
+	andl $-4, %edi
+	movl $0, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %eax
+	call create_list
+	addl $4, %esp
+	addl $3, %eax
+	andl $-4, %eax
+	pushl %eax
+	pushl %edi
+	call equal
+	addl $8, %esp
+	movl %eax, -24(%ebp)
+	cmpl $0, -24(%ebp)
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_120
+	andl $-4, %ebx
+	call create_dict
+	addl $0, %esp
+	addl $3, %eax
+	andl $-4, %eax
+	pushl %eax
+	pushl %ebx
+	call equal
+	addl $8, %esp
+	movl %eax, %ecx
+	jmp label_121
+	label_120: 
+	movl -24(%ebp), %ecx
+	label_121: 
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	jmp label_119
+	label_118: 
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_122
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_123
+	label_122: 
+	movl %ecx, %eax
+	label_123: 
+	cmpl $0, %eax
+	je label_124
+	movl %ebx, %eax
+	sarl $2, %eax
+	movl %eax, %ecx
+	jmp label_125
+	label_124: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_125: 
+	movl %ecx, %eax
+	label_119: 
+	cmpl $0, %eax
+	je label_126
+	movl $1, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %edi
+	movl $2, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ebx
+	movl %edi, %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_128
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_129
+	label_128: 
+	label_129: 
+	cmpl $0, %eax
+	je label_130
+	movl %edi, %eax
+	andl $-4, %eax
+	movl %ebx, %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_131
+	label_130: 
+	movl %edi, %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_132
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	jmp label_133
+	label_132: 
+	movl %eax, %ecx
+	label_133: 
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_134
+	movl %edi, %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, -4(%ebp)
+	cmpl $0, -4(%ebp)
+	je label_136
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_137
+	label_136: 
+	movl -4(%ebp), %eax
+	label_137: 
+	jmp label_135
+	label_134: 
+	movl %ecx, %eax
+	label_135: 
+	cmpl $0, %eax
+	je label_138
+	movl %edi, %eax
+	sarl $2, %eax
+	movl %ebx, %ecx
+	sarl $2, %ecx
+	addl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_139
+	label_138: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_139: 
+	label_131: 
+	movl %ecx, -4(%ebp)
+	movl $3, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, -8(%ebp)
+	movl -4(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_140
+	movl -8(%ebp), %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_141
+	label_140: 
+	label_141: 
+	cmpl $0, %eax
+	je label_142
+	movl -4(%ebp), %eax
+	andl $-4, %eax
+	movl -8(%ebp), %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_143
+	label_142: 
+	movl -4(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_144
+	movl -8(%ebp), %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	jmp label_145
+	label_144: 
+	movl %eax, %ecx
+	label_145: 
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_146
+	movl -4(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %esi
+	cmpl $0, %esi
+	je label_148
+	movl -8(%ebp), %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_149
+	label_148: 
+	movl %esi, %eax
+	label_149: 
+	jmp label_147
+	label_146: 
+	movl %ecx, %eax
+	label_147: 
+	cmpl $0, %eax
+	je label_150
+	movl -4(%ebp), %ecx
+	sarl $2, %ecx
+	movl -8(%ebp), %eax
+	sarl $2, %eax
+	addl %eax, %ecx
+	movl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_151
+	label_150: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_151: 
+	label_143: 
+	jmp label_127
+	label_126: 
+	movl $5, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ebx
+	movl $6, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %edi
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_152
+	movl %edi, %eax
+	andl $3, %eax
+	cmpl $3, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_153
+	label_152: 
+	label_153: 
+	cmpl $0, %eax
+	je label_154
+	movl %ebx, %eax
+	andl $-4, %eax
+	movl %edi, %ecx
+	andl $-4, %ecx
+	pushl %ecx
+	pushl %eax
+	call add
+	addl $8, %esp
+	addl $3, %eax
+	movl %eax, %ecx
+	jmp label_155
+	label_154: 
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	je label_156
+	movl %edi, %eax
+	andl $3, %eax
+	cmpl $0, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_157
+	label_156: 
+	movl %ecx, %eax
+	label_157: 
+	movl %eax, %ecx
+	cmpl $0, %ecx
+	sete %al
+	movzbl %al, %eax
+	cmpl $0, %eax
+	je label_158
+	movl %ebx, %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	movl %eax, %esi
+	cmpl $0, %esi
+	je label_160
+	movl %edi, %eax
+	andl $3, %eax
+	cmpl $1, %eax
+	sete %al
+	movzbl %al, %eax
+	jmp label_161
+	label_160: 
+	movl %esi, %eax
+	label_161: 
+	jmp label_159
+	label_158: 
+	movl %ecx, %eax
+	label_159: 
+	cmpl $0, %eax
+	je label_162
+	movl %ebx, %eax
+	sarl $2, %eax
+	movl %edi, %ecx
+	sarl $2, %ecx
+	addl %ecx, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl %eax, %ecx
+	jmp label_163
+	label_162: 
+	call abort
+	addl $0, %esp
+	movl %eax, %ecx
+	label_163: 
+	label_155: 
+	label_127: 
+	pushl %ecx
+	call print_any
+	addl $4, %esp
+	movl -60(%ebp), %esi
+	movl -56(%ebp), %edi
+	movl -52(%ebp), %ebx
+	movl $0, %eax
+	leave
+	ret
+
+
+
+output: 
+6
+11
+

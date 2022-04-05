@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/compile.py", line 85, in <module>
+    main()
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/compile.py", line 29, in main
+    explicate_ast = explicate.explicate(ast, {})
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/explicate.py", line 43, in explicate
+    return Module(None, explicate(ast.node, variables))
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/explicate.py", line 47, in explicate
+    newStmts.append(explicate(statement, variables))
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/explicate.py", line 55, in explicate
+    return Assign([explicate(ast.nodes[0], variables)], explicate(ast.expr, variables))
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/explicate.py", line 130, in explicate
+    raise Exception("No AST match: " + str(ast))
+Exception: No AST match: AssTuple([AssName('x', 'OP_ASSIGN'), AssName('y', 'OP_ASSIGN')])

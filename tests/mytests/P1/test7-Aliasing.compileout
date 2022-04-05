@@ -1,0 +1,140 @@
+
+Test File [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/test7-Aliasing.py]
+- - - - - - - -
+x = [1,2,3]
+y = x
+x = [4,5,6]
+print y
+y = x
+x[0] = 7
+print y- - - - - - - -
+explicate Module(None, Stmt([Assign([AssName('x', 'OP_ASSIGN')], List([InjectFrom(Const(0), Const(1)), InjectFrom(Const(0), Const(2)), InjectFrom(Const(0), Const(3))])), Assign([AssName('y', 'OP_ASSIGN')], Name('x')), Assign([AssName('x', 'OP_ASSIGN')], List([InjectFrom(Const(0), Const(4)), InjectFrom(Const(0), Const(5)), InjectFrom(Const(0), Const(6))])), Discard(CallFunc('print_any', [Name('y')], None, None)), Assign([AssName('y', 'OP_ASSIGN')], Name('x')), Discard(CallFunc('set_subscript', [Name('x'), InjectFrom(Const(0), Const(0)), InjectFrom(Const(0), Const(7))], None, None)), Discard(CallFunc('print_any', [Name('y')], None, None))]))
+
+final assembly file [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/test7-Aliasing.py] :
+.globl main
+main:
+	pushl %ebp
+	movl %esp, %ebp
+	movl %ebx, -8(%ebp)
+	movl %edi, -12(%ebp)
+	movl %esi, -16(%ebp)
+	subl $20, %esp
+	movl $1, %edi
+	sall $2, %edi
+	orl $0, %edi
+	movl $2, %ebx
+	sall $2, %ebx
+	orl $0, %ebx
+	movl $3, -4(%ebp)
+	sall $2, -4(%ebp)
+	orl $0, -4(%ebp)
+	movl $3, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %eax
+	call create_list
+	addl $4, %esp
+	movl %eax, %esi
+	addl $3, %esi
+	movl $0, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %edi
+	pushl %eax
+	pushl %esi
+	call set_subscript
+	addl $12, %esp
+	movl $1, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %ebx
+	pushl %eax
+	pushl %esi
+	call set_subscript
+	addl $12, %esp
+	movl $2, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl -4(%ebp)
+	pushl %eax
+	pushl %esi
+	call set_subscript
+	addl $12, %esp
+	movl %esi, %ebx
+	movl %ebx, %edi
+	movl $4, %ebx
+	sall $2, %ebx
+	orl $0, %ebx
+	movl $5, -4(%ebp)
+	sall $2, -4(%ebp)
+	orl $0, -4(%ebp)
+	movl $6, %esi
+	sall $2, %esi
+	orl $0, %esi
+	movl $3, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %eax
+	call create_list
+	addl $4, %esp
+	movl %eax, -8(%ebp)
+	addl $3, -8(%ebp)
+	movl $0, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %ebx
+	pushl %eax
+	pushl -8(%ebp)
+	call set_subscript
+	addl $12, %esp
+	movl $1, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl -4(%ebp)
+	pushl %eax
+	pushl -8(%ebp)
+	call set_subscript
+	addl $12, %esp
+	movl $2, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %esi
+	pushl %eax
+	pushl -8(%ebp)
+	call set_subscript
+	addl $12, %esp
+	movl -8(%ebp), %ebx
+	pushl %edi
+	call print_any
+	addl $4, %esp
+	movl %ebx, %edi
+	movl $0, %ecx
+	sall $2, %ecx
+	orl $0, %ecx
+	movl $7, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %eax
+	pushl %ecx
+	pushl %ebx
+	call set_subscript
+	addl $12, %esp
+	pushl %edi
+	call print_any
+	addl $4, %esp
+	movl -16(%ebp), %esi
+	movl -12(%ebp), %edi
+	movl -8(%ebp), %ebx
+	movl $0, %eax
+	leave
+	ret
+
+
+
+input: 
+
+
+output: 
+[1, 2, 3]
+[7, 5, 6]
+

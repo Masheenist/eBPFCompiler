@@ -1,0 +1,48 @@
+
+Test File [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/shoppingcart.py]
+- - - - - - - -
+ItemType = -1
+ItemAmt = -2
+ItemID = -3
+NoItems = -4 
+ItemList = -5
+Item1 = 0
+Item2 = 1
+Item3 = 2
+Item4 = 3
+
+ShoppingCart = {
+  Item1 : {
+    ItemType: 0,
+    ItemAmt: 700,
+    ItemID: 01,
+      },
+  Item2: {
+    ItemType: 1,
+    ItemAmt: 800,
+    ItemID: 02
+      },
+  Item3: {
+    ItemType: 3,
+    ItemAmt: 1200,
+    ItemID: 03
+      },
+  NoItems: 3,
+  ItemList: [Item1, Item2, Item3],
+}
+
+print ShoppingCart
+
+# Add to Cart
+ShoppingCart[Item4] = {
+  ItemType: 4,
+  ItemAmt: 10000,
+  ItemID: 04
+        }
+ShoppingCart[NoItems] = ShoppingCart[NoItems] + 1
+ShoppingCart[ItemList] = ShoppingCart[ItemList] + [Item4]
+
+print ShoppingCart
+- - - - - - - -
+explicate Module(None, Stmt([Assign([AssName('ItemType', 'OP_ASSIGN')], Let(Name('0'), InjectFrom(Const(0), Const(1)), IfExp(Let(Name('1'), Compare(GetTag(Name('0')), [('==', Const(0))]), IfExp(Not(Name('1')), Compare(GetTag(Name('0')), [('==', Const(1))]), Name('1'))), InjectFrom(Const(0), UnarySub(ProjectTo(Const(0), Name('0')))), CallFunc('abort', [], None, None)))), Assign([AssName('ItemAmt', 'OP_ASSIGN')], Let(Name('2'), InjectFrom(Const(0), Const(2)), IfExp(Let(Name('3'), Compare(GetTag(Name('2')), [('==', Const(0))]), IfExp(Not(Name('3')), Compare(GetTag(Name('2')), [('==', Const(1))]), Name('3'))), InjectFrom(Const(0), UnarySub(ProjectTo(Const(0), Name('2')))), CallFunc('abort', [], None, None)))), Assign([AssName('ItemID', 'OP_ASSIGN')], Let(Name('4'), InjectFrom(Const(0), Const(3)), IfExp(Let(Name('5'), Compare(GetTag(Name('4')), [('==', Const(0))]), IfExp(Not(Name('5')), Compare(GetTag(Name('4')), [('==', Const(1))]), Name('5'))), InjectFrom(Const(0), UnarySub(ProjectTo(Const(0), Name('4')))), CallFunc('abort', [], None, None)))), Assign([AssName('NoItems', 'OP_ASSIGN')], Let(Name('6'), InjectFrom(Const(0), Const(4)), IfExp(Let(Name('7'), Compare(GetTag(Name('6')), [('==', Const(0))]), IfExp(Not(Name('7')), Compare(GetTag(Name('6')), [('==', Const(1))]), Name('7'))), InjectFrom(Const(0), UnarySub(ProjectTo(Const(0), Name('6')))), CallFunc('abort', [], None, None)))), Assign([AssName('ItemList', 'OP_ASSIGN')], Let(Name('8'), InjectFrom(Const(0), Const(5)), IfExp(Let(Name('9'), Compare(GetTag(Name('8')), [('==', Const(0))]), IfExp(Not(Name('9')), Compare(GetTag(Name('8')), [('==', Const(1))]), Name('9'))), InjectFrom(Const(0), UnarySub(ProjectTo(Const(0), Name('8')))), CallFunc('abort', [], None, None)))), Assign([AssName('Item1', 'OP_ASSIGN')], InjectFrom(Const(0), Const(0))), Assign([AssName('Item2', 'OP_ASSIGN')], InjectFrom(Const(0), Const(1))), Assign([AssName('Item3', 'OP_ASSIGN')], InjectFrom(Const(0), Const(2))), Assign([AssName('Item4', 'OP_ASSIGN')], InjectFrom(Const(0), Const(3))), Assign([AssName('ShoppingCart', 'OP_ASSIGN')], Dict([(Name('Item1'), Dict([(Name('ItemType'), InjectFrom(Const(0), Const(0))), (Name('ItemAmt'), InjectFrom(Const(0), Const(700))), (Name('ItemID'), InjectFrom(Const(0), Const(1)))])), (Name('Item2'), Dict([(Name('ItemType'), InjectFrom(Const(0), Const(1))), (Name('ItemAmt'), InjectFrom(Const(0), Const(800))), (Name('ItemID'), InjectFrom(Const(0), Const(2)))])), (Name('Item3'), Dict([(Name('ItemType'), InjectFrom(Const(0), Const(3))), (Name('ItemAmt'), InjectFrom(Const(0), Const(1200))), (Name('ItemID'), InjectFrom(Const(0), Const(3)))])), (Name('NoItems'), InjectFrom(Const(0), Const(3))), (Name('ItemList'), List([Name('Item1'), Name('Item2'), Name('Item3')]))])), Discard(CallFunc('print_any', [Name('ShoppingCart')], None, None)), Discard(CallFunc('set_subscript', [Name('ShoppingCart'), Name('Item4'), Dict([(Name('ItemType'), InjectFrom(Const(0), Const(4))), (Name('ItemAmt'), InjectFrom(Const(0), Const(10000))), (Name('ItemID'), InjectFrom(Const(0), Const(4)))])], None, None)), Discard(CallFunc('set_subscript', [Name('ShoppingCart'), Name('NoItems'), Let(Name('10'), CallFunc('get_subscript', [Name('ShoppingCart'), Name('NoItems')], None, None), Let(Name('11'), InjectFrom(Const(0), Const(1)), IfExp(Let(Name('15'), Compare(GetTag(Name('10')), [('==', Const(3))]), IfExp(Name('15'), Compare(GetTag(Name('11')), [('==', Const(3))]), Name('15'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('10')), ProjectTo(Const(3), Name('11'))], None, None)), IfExp(Let(Name('14'), Let(Name('12'), Compare(GetTag(Name('10')), [('==', Const(0))]), IfExp(Name('12'), Compare(GetTag(Name('11')), [('==', Const(0))]), Name('12'))), IfExp(Not(Name('14')), Let(Name('13'), Compare(GetTag(Name('10')), [('==', Const(1))]), IfExp(Name('13'), Compare(GetTag(Name('11')), [('==', Const(1))]), Name('13'))), Name('14'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('10')), ProjectTo(Const(0), Name('11'))))), CallFunc('abort', [], None, None)))))], None, None)), Discard(CallFunc('set_subscript', [Name('ShoppingCart'), Name('ItemList'), Let(Name('16'), CallFunc('get_subscript', [Name('ShoppingCart'), Name('ItemList')], None, None), Let(Name('17'), List([Name('Item4')]), IfExp(Let(Name('21'), Compare(GetTag(Name('16')), [('==', Const(3))]), IfExp(Name('21'), Compare(GetTag(Name('17')), [('==', Const(3))]), Name('21'))), InjectFrom(Const(3), CallFunc('add', [ProjectTo(Const(3), Name('16')), ProjectTo(Const(3), Name('17'))], None, None)), IfExp(Let(Name('20'), Let(Name('18'), Compare(GetTag(Name('16')), [('==', Const(0))]), IfExp(Name('18'), Compare(GetTag(Name('17')), [('==', Const(0))]), Name('18'))), IfExp(Not(Name('20')), Let(Name('19'), Compare(GetTag(Name('16')), [('==', Const(1))]), IfExp(Name('19'), Compare(GetTag(Name('17')), [('==', Const(1))]), Name('19'))), Name('20'))), InjectFrom(Const(0), Add((ProjectTo(Const(0), Name('16')), ProjectTo(Const(0), Name('17'))))), CallFunc('abort', [], None, None)))))], None, None)), Discard(CallFunc('print_any', [Name('ShoppingCart')], None, None))]))
+

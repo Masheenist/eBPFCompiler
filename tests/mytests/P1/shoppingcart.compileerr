@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/compile.py", line 85, in <module>
+    main()
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/compile.py", line 35, in main
+    flattened_ast, variable_list = flatten.flatten(explicate_ast)
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/flatten.py", line 322, in flatten
+    return (flattenRecurs(ast, variables), variables)
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/flatten.py", line 17, in flattenRecurs
+    return flattenRecurs(ast.node, variables)
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/flatten.py", line 22, in flattenRecurs
+    result = flattenRecurs(statement, variables)
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/flatten.py", line 38, in flattenRecurs
+    result = flattenRecurs(ast.expr, variables)
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/flatten.py", line 284, in flattenRecurs
+    result = flattenRecurs(item[1], variables)
+  File "/home/masheenist/source/lab4-lab4-hanscom-llosa/src/pyyc/flatten.py", line 300, in flattenRecurs
+    result[0].prev = last
+AttributeError: 'NoneType' object has no attribute 'prev'

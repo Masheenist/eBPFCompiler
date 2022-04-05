@@ -1,0 +1,27 @@
+
+Test File [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/deep_list_swap.py]
+- - - - - - - -
+# deep list swap
+# output:
+# [1, 2, 3]
+# [4, 5, 6]
+# [4, 5, 6]
+# [1, 2, 3]
+a = [1, 2, 3]
+b = [4, 5, 6]
+print a
+print b
+tmp = a[0]
+a[0] = b[0]
+b[0] = tmp
+tmp = a[1]
+a[1] = b[1]
+b[1] = tmp
+tmp = a[2]
+a[2] = b[2]
+b[2] = tmp
+print a 
+print b
+- - - - - - - -
+explicate Module(None, Stmt([Assign([AssName('a', 'OP_ASSIGN')], List([InjectFrom(Const(0), Const(1)), InjectFrom(Const(0), Const(2)), InjectFrom(Const(0), Const(3))])), Assign([AssName('b', 'OP_ASSIGN')], List([InjectFrom(Const(0), Const(4)), InjectFrom(Const(0), Const(5)), InjectFrom(Const(0), Const(6))])), Discard(CallFunc('print_any', [Name('a')], None, None)), Discard(CallFunc('print_any', [Name('b')], None, None)), Assign([AssName('tmp', 'OP_ASSIGN')], CallFunc('get_subscript', [Name('a'), InjectFrom(Const(0), Const(0))], None, None)), Discard(CallFunc('set_subscript', [Name('a'), InjectFrom(Const(0), Const(0)), CallFunc('get_subscript', [Name('b'), InjectFrom(Const(0), Const(0))], None, None)], None, None)), Discard(CallFunc('set_subscript', [Name('b'), InjectFrom(Const(0), Const(0)), Name('tmp')], None, None)), Assign([AssName('tmp', 'OP_ASSIGN')], CallFunc('get_subscript', [Name('a'), InjectFrom(Const(0), Const(1))], None, None)), Discard(CallFunc('set_subscript', [Name('a'), InjectFrom(Const(0), Const(1)), CallFunc('get_subscript', [Name('b'), InjectFrom(Const(0), Const(1))], None, None)], None, None)), Discard(CallFunc('set_subscript', [Name('b'), InjectFrom(Const(0), Const(1)), Name('tmp')], None, None)), Assign([AssName('tmp', 'OP_ASSIGN')], CallFunc('get_subscript', [Name('a'), InjectFrom(Const(0), Const(2))], None, None)), Discard(CallFunc('set_subscript', [Name('a'), InjectFrom(Const(0), Const(2)), CallFunc('get_subscript', [Name('b'), InjectFrom(Const(0), Const(2))], None, None)], None, None)), Discard(CallFunc('set_subscript', [Name('b'), InjectFrom(Const(0), Const(2)), Name('tmp')], None, None)), Discard(CallFunc('print_any', [Name('a')], None, None)), Discard(CallFunc('print_any', [Name('b')], None, None))]))
+

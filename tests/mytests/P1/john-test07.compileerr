@@ -1,0 +1,2 @@
+/usr/bin/ld: /tmp/ccBu7D2J.o: warning: relocation against `abort@@GLIBC_2.0' in read-only section `.text'
+/usr/bin/ld: warning: creating DT_TEXTREL in a PIE

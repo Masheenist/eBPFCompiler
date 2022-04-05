@@ -1,0 +1,97 @@
+
+Test File [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/kyle-kaden-aliasing.py]
+- - - - - - - -
+a = {}
+
+a[1] = True
+b = a
+print b is a
+print b[1]
+
+a[0] = False
+print b[0]
+print b is a- - - - - - - -
+explicate Module(None, Stmt([Assign([AssName('a', 'OP_ASSIGN')], Dict([])), Discard(CallFunc('set_subscript', [Name('a'), InjectFrom(Const(0), Const(1)), InjectFrom(Const(1), Bool(True))], None, None)), Assign([AssName('b', 'OP_ASSIGN')], Name('a')), Discard(CallFunc('print_any', [InjectFrom(Const(1), Compare(Name('b'), [('==', Name('a'))]))], None, None)), Discard(CallFunc('print_any', [CallFunc('get_subscript', [Name('b'), InjectFrom(Const(0), Const(1))], None, None)], None, None)), Discard(CallFunc('set_subscript', [Name('a'), InjectFrom(Const(0), Const(0)), InjectFrom(Const(1), Bool(False))], None, None)), Discard(CallFunc('print_any', [CallFunc('get_subscript', [Name('b'), InjectFrom(Const(0), Const(0))], None, None)], None, None)), Discard(CallFunc('print_any', [InjectFrom(Const(1), Compare(Name('b'), [('==', Name('a'))]))], None, None))]))
+
+final assembly file [/home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/kyle-kaden-aliasing.py] :
+.globl main
+main:
+	pushl %ebp
+	movl %esp, %ebp
+	movl %ebx, -0(%ebp)
+	subl $4, %esp
+	call create_dict
+	addl $0, %esp
+	addl $3, %eax
+	movl %eax, %ebx
+	movl $1, %ecx
+	sall $2, %ecx
+	orl $0, %ecx
+	movl $1, %eax
+	sall $2, %eax
+	orl $1, %eax
+	pushl %eax
+	pushl %ecx
+	pushl %ebx
+	call set_subscript
+	addl $12, %esp
+	cmpl %ebx, %ebx
+	sete %al
+	movzbl %al, %eax
+	sall $2, %eax
+	orl $1, %eax
+	pushl %eax
+	call print_any
+	addl $4, %esp
+	movl $1, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %eax
+	pushl %ebx
+	call get_subscript
+	addl $8, %esp
+	pushl %eax
+	call print_any
+	addl $4, %esp
+	movl $0, %eax
+	sall $2, %eax
+	orl $0, %eax
+	movl $0, %ecx
+	sall $2, %ecx
+	orl $1, %ecx
+	pushl %ecx
+	pushl %eax
+	pushl %ebx
+	call set_subscript
+	addl $12, %esp
+	movl $0, %eax
+	sall $2, %eax
+	orl $0, %eax
+	pushl %eax
+	pushl %ebx
+	call get_subscript
+	addl $8, %esp
+	pushl %eax
+	call print_any
+	addl $4, %esp
+	cmpl %ebx, %ebx
+	sete %al
+	movzbl %al, %eax
+	sall $2, %eax
+	orl $1, %eax
+	pushl %eax
+	call print_any
+	addl $4, %esp
+	movl -0(%ebp), %ebx
+	movl $0, %eax
+	leave
+	ret
+
+
+
+output: 
+True
+True
+False
+True
+

@@ -1,0 +1,2 @@
+# invalid assignment
+y = y

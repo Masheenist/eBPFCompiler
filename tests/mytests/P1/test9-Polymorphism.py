@@ -1,0 +1,1 @@
+2 if input() else [1, 2, 3]
