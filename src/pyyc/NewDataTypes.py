@@ -52,3 +52,11 @@ class GlobalFuncName():
 		return "GlobalFuncName(" + str(self.name) + ")"
 	def __repr__(self):
 		return "GlobalFuncName(" + str(self.name) + ")"
+
+class String():
+	def __init__(self, val):
+		self.value = val
+	def __str__(self):
+		return "String(" + str(self.value) + ")"
+	def __repr__(self):
+		return "String(" + str(self.value) + ")"

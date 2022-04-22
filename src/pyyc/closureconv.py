@@ -25,12 +25,12 @@ class ClosureConverter():
         elif isinstance(node, Stmt):
             nodes = [self.closureConversion(n) for n in node.nodes]
             return Stmt([nodes])
-        
+
         elif isinstance(node, Printnl):
             t = self.closureConversion(node.nodes[0])
             # self.tree.node.nodes.append(Printnl([t], None))
             self.append_point.nodes.append(Printnl([t], None))
-        
+
         elif isinstance(node, Assign):
             t = self.closureConversion(node.expr)
             n = [self.closureConversion(x) for x in node.nodes]
@@ -110,7 +110,7 @@ class ClosureConverter():
             return CallFunc(
                     CallFunc(Name('get_fun_ptr'), [node.node], None, None),
                     [CallFunc(Name('get_free_vars'), [node.node], None, None)] + node.args)
-            
+
 
         elif isinstance(node,Lambda): #-> appends
             # append an assign to a lambda
@@ -137,7 +137,7 @@ class ClosureConverter():
 
             self.tree.node.nodes.append(Lambda([free_vars_name] + node.argnames, node.defaults, node.flags, body))
 
-            # second list is an access of the free vars, and we pass as the first parameter the name of the lambda. 
+            # second list is an access of the free vars, and we pass as the first parameter the name of the lambda.
             # if you call a function and it has a FunctionLabel in its arguments, its necessarily a call to create_closure. you convert a FunctionLabel to just node.defaults in x86_IR, right after explicate i think
             return CallFunc(Name('create_closure'), [FunctionLabel(node.defaults), List([Name(x) for x in self.free_vars[new_scope]])], None, None)
             #self.append_point.nodes.append(Assign([AssName(node.name, 'OP_ASSIGN')], Lambda(node.argnames, node.defaults, node.flags, body)))
@@ -157,43 +157,42 @@ class ClosureConverter():
             return
 
 
-test0 = """
-a = [3]
-def f(b):
-    c = [a[0] + b]
-    return lambda x: c[0] + x
+# test0 = """
+# a = [3]
+# def f(b):
+#     c = [a[0] + b]
+#     return lambda x: c[0] + x
 
-q = f(0)
-q(1)
-"""
+# q = f(0)
+# q(1)
+# """
 
-ast = compiler.parse(test0)
+# ast = compiler.parse(test0)
 
-print ast
+# print ast
 
-find_variables(ast)
-#print variable_counter
-#print varialbes_list
-#rename(ast)
-print "\n\n\n"
-print ast
-print "\n\n\n"
+# find_variables(ast)
+# #print variable_counter
+# #print varialbes_list
+# #rename(ast)
+# print "\n\n\n"
+# print ast
+# print "\n\n\n"
 
-lf = LambdaUnifier()
-lf.lambdaUnify(ast)
+# lf = LambdaUnifier()
+# lf.lambdaUnify(ast)
 
-print lf.tree
+# print lf.tree
 
-print "\n\n\n"
+# print "\n\n\n"
 
-cc = ClosureConverter({'lambda_0': ['a'], 'lambda_1': ['c']})
-cc.closureConversion(lf.tree)
+# cc = ClosureConverter({'lambda_0': ['a'], 'lambda_1': ['c']})
+# cc.closureConversion(lf.tree)
 
-for node in cc.tree.node.nodes:
-    print node
-for node in cc.tree.node.nodes[0].nodes:
-    print node
+# for node in cc.tree.node.nodes:
+#     print node
+# for node in cc.tree.node.nodes[0].nodes:
+#     print node
 
 
-print "\n\n\n"
-
+# print "\n\n\n"

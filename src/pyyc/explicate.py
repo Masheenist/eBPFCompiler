@@ -7,9 +7,9 @@ INT = 0
 BOOL = 1
 BIG = 3
 
-def add_variable(variables):
-	ret = Name(str(len(variables)))
-	variables[ret] = name
+def add_variable(variable_list):
+	ret = Name("v" + str(len(variable_list)))
+	variable_list[ret] = name
 	return ret
 
 def ifElseChain(conditions, actions):
@@ -20,45 +20,22 @@ def ifElseChain(conditions, actions):
 		struct = IfExp(conditions[i], actions[i], struct)
 	return struct
 
-def qAnd(e1,e2, variables):
-	x = add_variable(variables)
+def qAnd(e1,e2, variable_list):
+	x = add_variable(variable_list)
 	return Let(x, e1, IfExp( x, e2, x))
 
-def qOr(e1,e2, variables):
-	x = add_variable(variables)
+def qOr(e1,e2, variable_list):
+	x = add_variable(variable_list)
 	return Let(x, e1, IfExp(Not(x), e2, x))
 
-def getBool(e1, variables):
-	conditions = [
-	    qOr(
-	        Compare(GetTag(e1), [("==", Const(INT))]),
-	        Compare(GetTag(e1), [("==", Const(BOOL))]),
-	        variables,
-	    )
-	]
-	actions = [ProjectTo(Const(BOOL), e1)]
+def getBool(e1, variable_list):
+	conditions = []
+	actions = []
+	conditions.append(qOr(Compare(GetTag(e1), [("==", Const(INT))] ), Compare(GetTag(e1), [("==", Const(BOOL))] ), variable_list))
+	actions.append(ProjectTo(Const(BOOL), e1))
 	conditions.append(Compare(GetTag(e1), [("==", Const(BIG))] ))
-	actions.extend((
-	    Not(
-	        qOr(
-	            CallFunc(GlobalFuncName(
-	                "equal",
-	                [
-	                    ProjectTo(Const(BIG), e1),
-	                    ProjectTo(Const(BIG), List([])),
-	                ],
-	            ),
-	            CallFunc(GlobalFuncName(
-	                "equal",
-	                [
-	                    ProjectTo(Const(BIG), e1),
-	                    ProjectTo(Const(BIG), Dict([])),
-	                ],
-	            ),
-	            variables,
-	        )),
-	    CallFunc(GlobalFuncName("abort", []),
-	)))))
+	actions.append(Not(qOr(CallFunc(GlobalFuncName("equal"), [ProjectTo(Const(BIG), e1), ProjectTo(Const(BIG), List([]))]),CallFunc(GlobalFuncName("equal"), [ProjectTo(Const(BIG), e1), ProjectTo(Const(BIG), Dict([]))]), variable_list)))
+	actions.append(CallFunc(GlobalFuncName("abort"), []))
 	return ifElseChain(conditions, actions)
 
 def explicate(ast, variable_list):
@@ -117,16 +94,14 @@ def explicate(ast, variable_list):
 		operations = [InjectFrom(Const(INT), UnarySub(ProjectTo(Const(INT), new_variable))), CallFunc(GlobalFuncName("abort"), [])]
 		return Let(new_variable, explicate(ast.expr, variable_list), ifElseChain(conditions, operations))
 	elif isinstance(ast, CallFunc):
-		print "explicate now handling", ast
-		print "\n\n"
-		new_args = []
+		newArgs = []
 		for arg in ast.args:
-			new_args.append(explicate(arg, variable_list))
-		node = explicate(ast.node, variable_list)
-		if isinstance(node, GlobalFuncName):
-			if node.name == "input":
-				return InjectFrom(Const(0), CallFunc(explicate(ast.node, variable_list), new_args))
-		return CallFunc(explicate(ast.node, variable_list), new_args)
+			newArgs.append(explicate(arg, variable_list))
+		ret = explicate(ast.node, variable_list)
+		if isinstance(ret, GlobalFuncName):
+			if ret.name == "input":
+				return InjectFrom(Const(0), CallFunc(explicate(ast.node, variable_list), newArgs))
+		return CallFunc(explicate(ast.node, variable_list), newArgs)
 	elif isinstance(ast, Add):
 		left = add_variable(variable_list)
 		right = add_variable(variable_list)
@@ -164,7 +139,14 @@ def explicate(ast, variable_list):
 			return Let(left, explicate(ast.expr, variable_list), Let(right, explicate(ast.ops[0][1], variable_list), ifElseChain(conditions,operations)))
 		else:
 			return InjectFrom(Const(BOOL), Compare(explicate(ast.expr, variable_list), [("==", explicate(ast.ops[0][1], variable_list))]))
-	elif isinstance(ast, FunctionLabel):
+	elif isinstance(ast, If):
+		return If([(explicate(ast.tests[0][0], variable_list), explicate(ast.tests[0][1], variable_list))], explicate(ast.else_, variable_list))
+	elif isinstance(ast, While):
+		x = add_variable(variable_list)
+		return While(Let(x, explicate(ast.test, variable_list), getBool(x, variable_list)), explicate(ast.body, variable_list), None)
+	elif isinstance(ast, Let):
+		return Let(explicate(ast.var, variable_list), explicate(ast.rhs, variable_list), explicate(ast.body, variable_list))
+	elif isinstance(ast, GlobalFuncName):
 		return ast
 	else:
 		print ast

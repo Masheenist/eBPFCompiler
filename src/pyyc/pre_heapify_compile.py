@@ -29,7 +29,6 @@ a = [3]
 def f(b):
     c = [a[0] + b]
     return lambda x: c[0] + x
-
 q = f(0)
 q(1)
 """

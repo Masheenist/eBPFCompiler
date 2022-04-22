@@ -1,4 +1,5 @@
 import dataTypes
+import NewDataTypes
 
 #takes the node type and converts to appropriate assembly
 def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_stack_allocation):
@@ -76,66 +77,86 @@ def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_s
 		returnValue = "\taddl ${0}, %esp\n\tmovl $0, %eax\n\tleave\n\tret\n".format(stack_offset)
 	return returnValue, stack_offset, start_stack_allocation
 
-
 def write_assembly_file(output_file, flattened_assembly, graph_nodes, graph_colors):
-	ebx = False
-	edi = False
-	esi = False
-	for item in graph_nodes:
-		if graph_nodes[item].color == "%ebx":
-			ebx = True
-		elif graph_nodes[item].color == "%edi":
-			edi = True
-		elif graph_nodes[item].color == "%esi":
-			esi = True
-
-	with open(output_file, "w") as output_filename:
-		current = flattened_assembly
-		output_filename.write(".globl main\nmain:\n\tpushl %ebp\n\tmovl %esp, %ebp\n")
-		if ebx:
-			output_filename.write("\tmovl %ebx, -" + str(graph_colors * 4) + "(%ebp)\n")
-			graph_colors += 1
-		if edi:
-			output_filename.write("\tmovl %edi, -" + str(graph_colors * 4) + "(%ebp)\n")
-			graph_colors += 1
-		if esi:
-			output_filename.write("\tmovl %esi, -" + str(graph_colors * 4) + "(%ebp)\n")
-			graph_colors += 1
-		output_filename.write("\tsubl $" + str(graph_colors * 4) + ", %esp\n")
-		while current != None:
-			if isinstance(current.input1, dataTypes.Variable) and isinstance(current.input2, dataTypes.Variable) and str(graph_nodes[current.input1.name].color) == str(graph_nodes[current.input2.name].color) and current.type == "movl":
-				current = current.next
-			else:
-				output_filename.write("\t" + current.type + " ")
-				if isinstance(current.input1, dataTypes.Variable):
-					if current.input1.name == "al":
-						output_filename.write("%al")
-					else:
-						output_filename.write(str(graph_nodes[current.input1.name].color))
-				elif current.type in ["call", "jmp", "je"]:
-					output_filename.write(str(current.input1))
+	with open(output_file, "w") as file_handle:
+		file_handle.write(".globl main\n")
+		for func in flattened_assembly:
+			ebx = False
+			edi = False
+			esi = False
+			for key in graph_nodes[func]:
+				if graph_nodes[func][key].color == "%ebx":
+					ebx = True
+				elif graph_nodes[func][key].color == "%edi":
+					edi = True
+				elif graph_nodes[func][key].color == "%esi":
+					esi = True
+				working = flattened_assembly[func]
+			file_handle.write(func + ":\n")
+			file_handle.write("\tpushl %ebp\n")
+			file_handle.write("\tmovl %esp, %ebp\n")
+			file_handle.write("\tsubl $" + str(graph_colors[func] * 4) + ", %esp\n")
+			graph_colors[func] += 1
+			if ebx:
+				file_handle.write("\tmovl %ebx, -" + str(graph_colors[func] * 4) + "(%ebp)\n")
+				graph_colors[func] += 1
+			if edi:
+				file_handle.write("\tmovl %edi, -" + str(graph_colors[func] * 4) + "(%ebp)\n")
+				graph_colors[func] += 1
+			if esi:
+				file_handle.write("\tmovl %esi, -" + str(graph_colors[func] * 4) + "(%ebp)\n")
+				graph_colors[func] += 1
+			while working != None:
+				if isinstance(working.input1, dataTypes.Variable) and isinstance(working.input2, dataTypes.Variable) and str(graph_nodes[func][working.input1.name].color) == str(graph_nodes[func][working.input2.name].color) and working.type == "movl":
+					working = working.next
 				else:
-					if current.input1 != None:
-						if current.input1 == True:
-							output_filename.write("$1")
-						elif current.input1 == False:
-							output_filename.write("$0")
+					file_handle.write("\t" + working.type + " ")
+					if working.type == "call":
+						if isinstance(working.input1, dataTypes.Variable):
+							file_handle.write("* ")
+							file_handle.write(str(graph_nodes[func][working.input1.name].color))
 						else:
-							output_filename.write("$" + str(current.input1))
-				if isinstance(current.input2, dataTypes.Variable):
-					output_filename.write(", " + str(graph_nodes[current.input2.name].color))
-				elif current.input2 != None:
-					output_filename.write(", " + str(current.input2))
-				output_filename.write("\n")
-				current = current.next
-		if esi:
-			graph_colors -= 1
-			output_filename.write("\tmovl -" + str(graph_colors * 4) + "(%ebp), %esi\n")
-		if edi:
-			graph_colors -= 1
-			output_filename.write("\tmovl -" + str(graph_colors * 4) + "(%ebp), %edi\n")
-		if ebx:
-			graph_colors -= 1
-			output_filename.write("\tmovl -" + str(graph_colors * 4) + "(%ebp), %ebx\n")
-		output_filename.write("\tmovl $0, %eax\n\tleave\n\tret\n")
-		output_filename.close()
+							file_handle.write(str(working.input1.name))
+					elif isinstance(working.input1, dataTypes.Variable):
+						if working.input1.name == "al":
+							file_handle.write("%al")
+						else:
+							file_handle.write(str(graph_nodes[func][working.input1.name].color))
+					elif isinstance(working.input1, NewDataTypes.GlobalFuncName):
+						file_handle.write(str("$"))
+						file_handle.write(str(working.input1.name))
+					elif isinstance(working.input1, dataTypes.Stack):
+						file_handle.write(str(working.input1.name))
+					elif working.type in ["jmp", "je", "jne"]:
+						file_handle.write(str(working.input1))
+					else:
+						if working.input1 != None:
+							if working.input1 == True:
+								file_handle.write("$1")
+							elif working.input1 == False:
+								file_handle.write("$0")
+							else:
+								file_handle.write("$" + str(working.input1))
+					if isinstance(working.input2, dataTypes.Variable):
+						file_handle.write(", " + str(graph_nodes[func][working.input2.name].color))
+					elif working.input2 != None:
+						if isinstance(working.input2, dataTypes.Stack):
+							file_handle.write(", " + str(working.input2.name))
+						else:
+							file_handle.write(", " + str(working.input2))
+					file_handle.write("\n")
+					working = working.next
+			file_handle.write("\tmovl $0, %eax\n")
+			file_handle.write("\t" + func + "_end:\n")
+			if esi:
+				graph_colors[func] -= 1
+				file_handle.write("\tmovl -" + str(graph_colors[func] * 4) + "(%ebp), %esi\n")
+			if edi:
+				graph_colors[func] -= 1
+				file_handle.write("\tmovl -" + str(graph_colors[func] * 4) + "(%ebp), %edi\n")
+			if ebx:
+				graph_colors[func] -= 1
+				file_handle.write("\tmovl -" + str(graph_colors[func] * 4) + "(%ebp), %ebx\n")
+			file_handle.write("\tleave\n")
+			file_handle.write("\tret\n")
+		file_handle.close()
