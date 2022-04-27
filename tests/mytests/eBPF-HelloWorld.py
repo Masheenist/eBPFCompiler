@@ -6,8 +6,13 @@ from bcc import BPF
 #  return 0;
 #}
 #"""
-def BPF_PROGRAM():
-    bpf_trace_printk = ("Hello world! File opened\n");
+
+BPF_PROGRAM = r"""
+def hello(ctx) {
+    bpf_trace_printk("Hello world! File opened\n");
+    return 0
+}
+"""
 
 bpf = BPF(text=BPF_PROGRAM)
 bpf.attach_kprobe(event=bpf.get_syscall_fnname("clone"), fn_name="hello")
