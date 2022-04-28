@@ -8,10 +8,9 @@ from bcc import BPF
 #"""
 
 BPF_PROGRAM = r"""
-def hello(ctx) {
+def hello(ctx):
     bpf_trace_printk("Hello world! File opened\n");
     return 0
-}
 """
 
 bpf = BPF(text=BPF_PROGRAM)
