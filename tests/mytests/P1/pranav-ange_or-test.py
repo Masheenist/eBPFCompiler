@@ -1,1 +1,0 @@
-print False or 5 == 6 and 7 == 8 and 3

@@ -1,0 +1,390 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> module
+Rule 1     module -> statement_list
+Rule 2     statement_list -> statement_list new_line statement
+Rule 3     statement_list -> statement
+Rule 4     statement_list -> statement_list new_line
+Rule 5     new_line -> NEW_LINE
+Rule 6     new_line -> new_line NEW_LINE
+Rule 7     statement -> PRINT expression
+Rule 8     statement -> NAME ASSIGN expression
+Rule 9     statement -> expression
+Rule 10    expression -> expression PLUS expression
+Rule 11    expression -> NEG expression
+Rule 12    expression -> INT
+Rule 13    expression -> NAME
+Rule 14    expression -> PAREN_START expression PAREN_END
+Rule 15    expression -> INPUT PAREN_START PAREN_END
+
+Terminals, with rules where they appear
+
+ASSIGN               : 8
+INPUT                : 15
+INT                  : 12
+NAME                 : 8 13
+NEG                  : 11
+NEW_LINE             : 5 6
+PAREN_END            : 14 15
+PAREN_START          : 14 15
+PLUS                 : 10
+PRINT                : 7
+error                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 7 8 9 10 10 11 14
+module               : 0
+new_line             : 2 4 6
+statement            : 2 3
+statement_list       : 1 2 4
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . module
+    (1) module -> . statement_list
+    (2) statement_list -> . statement_list new_line statement
+    (3) statement_list -> . statement
+    (4) statement_list -> . statement_list new_line
+    (7) statement -> . PRINT expression
+    (8) statement -> . NAME ASSIGN expression
+    (9) statement -> . expression
+    (10) expression -> . expression PLUS expression
+    (11) expression -> . NEG expression
+    (12) expression -> . INT
+    (13) expression -> . NAME
+    (14) expression -> . PAREN_START expression PAREN_END
+    (15) expression -> . INPUT PAREN_START PAREN_END
+
+    PRINT           shift and go to state 6
+    NAME            shift and go to state 1
+    NEG             shift and go to state 3
+    INT             shift and go to state 2
+    PAREN_START     shift and go to state 4
+    INPUT           shift and go to state 9
+
+    statement_list                 shift and go to state 8
+    expression                     shift and go to state 10
+    statement                      shift and go to state 7
+    module                         shift and go to state 5
+
+state 1
+
+    (8) statement -> NAME . ASSIGN expression
+    (13) expression -> NAME .
+
+    ASSIGN          shift and go to state 11
+    PLUS            reduce using rule 13 (expression -> NAME .)
+    NEW_LINE        reduce using rule 13 (expression -> NAME .)
+    $end            reduce using rule 13 (expression -> NAME .)
+
+
+state 2
+
+    (12) expression -> INT .
+
+    PAREN_END       reduce using rule 12 (expression -> INT .)
+    PLUS            reduce using rule 12 (expression -> INT .)
+    NEW_LINE        reduce using rule 12 (expression -> INT .)
+    $end            reduce using rule 12 (expression -> INT .)
+
+
+state 3
+
+    (11) expression -> NEG . expression
+    (10) expression -> . expression PLUS expression
+    (11) expression -> . NEG expression
+    (12) expression -> . INT
+    (13) expression -> . NAME
+    (14) expression -> . PAREN_START expression PAREN_END
+    (15) expression -> . INPUT PAREN_START PAREN_END
+
+    NEG             shift and go to state 3
+    INT             shift and go to state 2
+    NAME            shift and go to state 12
+    PAREN_START     shift and go to state 4
+    INPUT           shift and go to state 9
+
+    expression                     shift and go to state 13
+
+state 4
+
+    (14) expression -> PAREN_START . expression PAREN_END
+    (10) expression -> . expression PLUS expression
+    (11) expression -> . NEG expression
+    (12) expression -> . INT
+    (13) expression -> . NAME
+    (14) expression -> . PAREN_START expression PAREN_END
+    (15) expression -> . INPUT PAREN_START PAREN_END
+
+    NEG             shift and go to state 3
+    INT             shift and go to state 2
+    NAME            shift and go to state 12
+    PAREN_START     shift and go to state 4
+    INPUT           shift and go to state 9
+
+    expression                     shift and go to state 14
+
+state 5
+
+    (0) S' -> module .
+
+
+
+state 6
+
+    (7) statement -> PRINT . expression
+    (10) expression -> . expression PLUS expression
+    (11) expression -> . NEG expression
+    (12) expression -> . INT
+    (13) expression -> . NAME
+    (14) expression -> . PAREN_START expression PAREN_END
+    (15) expression -> . INPUT PAREN_START PAREN_END
+
+    NEG             shift and go to state 3
+    INT             shift and go to state 2
+    NAME            shift and go to state 12
+    PAREN_START     shift and go to state 4
+    INPUT           shift and go to state 9
+
+    expression                     shift and go to state 15
+
+state 7
+
+    (3) statement_list -> statement .
+
+    NEW_LINE        reduce using rule 3 (statement_list -> statement .)
+    $end            reduce using rule 3 (statement_list -> statement .)
+
+
+state 8
+
+    (1) module -> statement_list .
+    (2) statement_list -> statement_list . new_line statement
+    (4) statement_list -> statement_list . new_line
+    (5) new_line -> . NEW_LINE
+    (6) new_line -> . new_line NEW_LINE
+
+    $end            reduce using rule 1 (module -> statement_list .)
+    NEW_LINE        shift and go to state 16
+
+    new_line                       shift and go to state 17
+
+state 9
+
+    (15) expression -> INPUT . PAREN_START PAREN_END
+
+    PAREN_START     shift and go to state 18
+
+
+state 10
+
+    (9) statement -> expression .
+    (10) expression -> expression . PLUS expression
+
+    NEW_LINE        reduce using rule 9 (statement -> expression .)
+    $end            reduce using rule 9 (statement -> expression .)
+    PLUS            shift and go to state 19
+
+
+state 11
+
+    (8) statement -> NAME ASSIGN . expression
+    (10) expression -> . expression PLUS expression
+    (11) expression -> . NEG expression
+    (12) expression -> . INT
+    (13) expression -> . NAME
+    (14) expression -> . PAREN_START expression PAREN_END
+    (15) expression -> . INPUT PAREN_START PAREN_END
+
+    NEG             shift and go to state 3
+    INT             shift and go to state 2
+    NAME            shift and go to state 12
+    PAREN_START     shift and go to state 4
+    INPUT           shift and go to state 9
+
+    expression                     shift and go to state 20
+
+state 12
+
+    (13) expression -> NAME .
+
+    PAREN_END       reduce using rule 13 (expression -> NAME .)
+    PLUS            reduce using rule 13 (expression -> NAME .)
+    NEW_LINE        reduce using rule 13 (expression -> NAME .)
+    $end            reduce using rule 13 (expression -> NAME .)
+
+
+state 13
+
+    (11) expression -> NEG expression .
+    (10) expression -> expression . PLUS expression
+
+    PAREN_END       reduce using rule 11 (expression -> NEG expression .)
+    PLUS            reduce using rule 11 (expression -> NEG expression .)
+    NEW_LINE        reduce using rule 11 (expression -> NEG expression .)
+    $end            reduce using rule 11 (expression -> NEG expression .)
+
+  ! PLUS            [ shift and go to state 19 ]
+
+
+state 14
+
+    (14) expression -> PAREN_START expression . PAREN_END
+    (10) expression -> expression . PLUS expression
+
+    PAREN_END       shift and go to state 21
+    PLUS            shift and go to state 19
+
+
+state 15
+
+    (7) statement -> PRINT expression .
+    (10) expression -> expression . PLUS expression
+
+    NEW_LINE        reduce using rule 7 (statement -> PRINT expression .)
+    $end            reduce using rule 7 (statement -> PRINT expression .)
+    PLUS            shift and go to state 19
+
+
+state 16
+
+    (5) new_line -> NEW_LINE .
+
+    NEW_LINE        reduce using rule 5 (new_line -> NEW_LINE .)
+    PRINT           reduce using rule 5 (new_line -> NEW_LINE .)
+    NAME            reduce using rule 5 (new_line -> NEW_LINE .)
+    NEG             reduce using rule 5 (new_line -> NEW_LINE .)
+    INT             reduce using rule 5 (new_line -> NEW_LINE .)
+    PAREN_START     reduce using rule 5 (new_line -> NEW_LINE .)
+    INPUT           reduce using rule 5 (new_line -> NEW_LINE .)
+    $end            reduce using rule 5 (new_line -> NEW_LINE .)
+
+
+state 17
+
+    (2) statement_list -> statement_list new_line . statement
+    (4) statement_list -> statement_list new_line .
+    (6) new_line -> new_line . NEW_LINE
+    (7) statement -> . PRINT expression
+    (8) statement -> . NAME ASSIGN expression
+    (9) statement -> . expression
+    (10) expression -> . expression PLUS expression
+    (11) expression -> . NEG expression
+    (12) expression -> . INT
+    (13) expression -> . NAME
+    (14) expression -> . PAREN_START expression PAREN_END
+    (15) expression -> . INPUT PAREN_START PAREN_END
+
+  ! shift/reduce conflict for NEW_LINE resolved as shift
+    $end            reduce using rule 4 (statement_list -> statement_list new_line .)
+    NEW_LINE        shift and go to state 23
+    PRINT           shift and go to state 6
+    NAME            shift and go to state 1
+    NEG             shift and go to state 3
+    INT             shift and go to state 2
+    PAREN_START     shift and go to state 4
+    INPUT           shift and go to state 9
+
+  ! NEW_LINE        [ reduce using rule 4 (statement_list -> statement_list new_line .) ]
+
+    expression                     shift and go to state 10
+    statement                      shift and go to state 22
+
+state 18
+
+    (15) expression -> INPUT PAREN_START . PAREN_END
+
+    PAREN_END       shift and go to state 24
+
+
+state 19
+
+    (10) expression -> expression PLUS . expression
+    (10) expression -> . expression PLUS expression
+    (11) expression -> . NEG expression
+    (12) expression -> . INT
+    (13) expression -> . NAME
+    (14) expression -> . PAREN_START expression PAREN_END
+    (15) expression -> . INPUT PAREN_START PAREN_END
+
+    NEG             shift and go to state 3
+    INT             shift and go to state 2
+    NAME            shift and go to state 12
+    PAREN_START     shift and go to state 4
+    INPUT           shift and go to state 9
+
+    expression                     shift and go to state 25
+
+state 20
+
+    (8) statement -> NAME ASSIGN expression .
+    (10) expression -> expression . PLUS expression
+
+    NEW_LINE        reduce using rule 8 (statement -> NAME ASSIGN expression .)
+    $end            reduce using rule 8 (statement -> NAME ASSIGN expression .)
+    PLUS            shift and go to state 19
+
+
+state 21
+
+    (14) expression -> PAREN_START expression PAREN_END .
+
+    PAREN_END       reduce using rule 14 (expression -> PAREN_START expression PAREN_END .)
+    PLUS            reduce using rule 14 (expression -> PAREN_START expression PAREN_END .)
+    NEW_LINE        reduce using rule 14 (expression -> PAREN_START expression PAREN_END .)
+    $end            reduce using rule 14 (expression -> PAREN_START expression PAREN_END .)
+
+
+state 22
+
+    (2) statement_list -> statement_list new_line statement .
+
+    NEW_LINE        reduce using rule 2 (statement_list -> statement_list new_line statement .)
+    $end            reduce using rule 2 (statement_list -> statement_list new_line statement .)
+
+
+state 23
+
+    (6) new_line -> new_line NEW_LINE .
+
+    NEW_LINE        reduce using rule 6 (new_line -> new_line NEW_LINE .)
+    PRINT           reduce using rule 6 (new_line -> new_line NEW_LINE .)
+    NAME            reduce using rule 6 (new_line -> new_line NEW_LINE .)
+    NEG             reduce using rule 6 (new_line -> new_line NEW_LINE .)
+    INT             reduce using rule 6 (new_line -> new_line NEW_LINE .)
+    PAREN_START     reduce using rule 6 (new_line -> new_line NEW_LINE .)
+    INPUT           reduce using rule 6 (new_line -> new_line NEW_LINE .)
+    $end            reduce using rule 6 (new_line -> new_line NEW_LINE .)
+
+
+state 24
+
+    (15) expression -> INPUT PAREN_START PAREN_END .
+
+    PAREN_END       reduce using rule 15 (expression -> INPUT PAREN_START PAREN_END .)
+    PLUS            reduce using rule 15 (expression -> INPUT PAREN_START PAREN_END .)
+    NEW_LINE        reduce using rule 15 (expression -> INPUT PAREN_START PAREN_END .)
+    $end            reduce using rule 15 (expression -> INPUT PAREN_START PAREN_END .)
+
+
+state 25
+
+    (10) expression -> expression PLUS expression .
+    (10) expression -> expression . PLUS expression
+
+    PAREN_END       reduce using rule 10 (expression -> expression PLUS expression .)
+    PLUS            reduce using rule 10 (expression -> expression PLUS expression .)
+    NEW_LINE        reduce using rule 10 (expression -> expression PLUS expression .)
+    $end            reduce using rule 10 (expression -> expression PLUS expression .)
+
+  ! PLUS            [ shift and go to state 19 ]
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for NEW_LINE in state 17 resolved as shift

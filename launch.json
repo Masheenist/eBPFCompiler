@@ -6,8 +6,7 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "console": "integratedTerminal",
-            "args": ["./lab4-lab4-hanscom-llosa/tests/mytests/test1-AndConditional.py"]
+            "console": "integratedTerminal"
         }
     ]
 }

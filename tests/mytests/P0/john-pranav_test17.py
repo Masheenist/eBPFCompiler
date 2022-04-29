@@ -1,2 +1,0 @@
-# invalid assignment
-y = y

@@ -18,4 +18,4 @@ THIS_DIR=$(cd $(dirname $0) && pwd)
 
 # Example: A python script called src/pyyc/compile.py is passed
 # the arguments that are passed to this script.
-timeout --preserve-status  -s SIGKILL 20 python2 ${THIS_DIR}/src/pyyc/compile.py $* 
+python2 ${THIS_DIR}/src/pyyc/compile.py $*

@@ -1,3 +1,0 @@
-/usr/bin/ld: /tmp/cco1ROE5.o: warning: relocation against `abort@@GLIBC_2.0' in read-only section `.text'
-/usr/bin/ld: warning: creating DT_TEXTREL in a PIE
-cat: /home/masheenist/source/lab4-lab4-hanscom-llosa/tests/mytests/kyle-kaden-not-aliasing.in: No such file or directory

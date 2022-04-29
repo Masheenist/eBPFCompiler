@@ -40,7 +40,7 @@ $ cat tests/mytests/test1.in | tests/mytests/test1 > tests/mytests/test1.out
 
 - Generate the expected output using the python2 interpreter.
 ```bash
-$ cat tests/mytests/test1.in | python2 tests/mytests/test1.py > tests/mytests/test1.expected
+$ cat tests/mytests/test1.in | python2 mytests/test1.py > tests/mytests/test1.expected
 ```
 
 - Diff your result with the expected output.
@@ -59,7 +59,7 @@ Also for your convenience, the tester used in the autograder is provided for you
 
 ```bash
 $ cd tests
-$ pytest --pyyctests tests/mytests
+$ pytest --pyyctests mytests
 ```
 
 where `tests/mytests` is the directory with your compiler tests. Make sure you have [pytest] installed. You might want to consider using [pipenv] to manage your dependencies and Python environment.

@@ -3,8 +3,8 @@ main:
 	pushl %ebp
 	movl %esp, %ebp
 	subl $4, %esp
-	movl $1, %eax
-	addl $2, %eax
+	movl $100, %eax
+	addl $1000, %eax
 	movl %eax, -4(%ebp)
 	movl -4(%ebp), %eax
 	pushl %eax
