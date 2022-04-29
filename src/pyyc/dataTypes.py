@@ -60,9 +60,8 @@ def get_value(simple_expression, variable_name):
 	while simple_expression.prev != None:
 		simple_expression = simple_expression.prev
 	while simple_expression != None:
-		if simple_expression.type != "Add":
-			if simple_expression.input1 == variable_name and simple_expression.output != None:
-				returnValue = simple_expression.output
+		if simple_expression.type != "Add" and simple_expression.input1 == variable_name and simple_expression.output != None:
+			returnValue = simple_expression.output
 		simple_expression = simple_expression.next
 	return returnValue
 
