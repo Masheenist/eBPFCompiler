@@ -1,0 +1,18 @@
+WHAT IS P0:
+ - only 1 function def (like basic_test.py)
+ - addition
+ - function calls
+
+WHAT IS P1:
+ - structs
+ - multiple functions can defined (includes lambdas, which would be converted to functions like in closure conversion)
+ - ifs/elses/etc.
+
+WHAT IS P2:
+ - other types like int[] = {1, 2, 3} and function pointers <- prioritize
+
+=====NEED TO GET TO P2=====
+
+WHAT IS P3:
+ - non-ephemeral types -> [], {} -> BPF map
+ - dynamic typing solution, runtime.c-like stuff

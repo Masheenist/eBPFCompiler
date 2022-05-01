@@ -125,7 +125,7 @@ def print_expressions(simple_expression):
 def recursive_flatten(ast, expression_list, VT):
 
 	if isinstance(ast, Module):
-		return recursive_flatten(ast.node, expression_list, VT)
+		return recursive_flatten(ast.body, expression_list, VT)
 
 	elif isinstance(ast, Stmt):
 		for node in ast.nodes:
