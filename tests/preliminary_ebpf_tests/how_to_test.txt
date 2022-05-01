@@ -1,0 +1,15 @@
+For udp_counter.c:
+- Update bcc_prog.py to use udp_counter, and use interface of choice
+- make sure mtu of interface is set to 3400 and that ethtool combined is 1/2 total: https://trying2adult.com/what-is-xdp-and-how-do-you-use-it-in-linux-amazon-ec2-example/
+- run python3 bcc_prog.py
+- in another window, "nc -l ADDRESS port"
+- in yet another window, "nc -u ADDRESS port". should fail due to access denied, but 
+    bcc_prog window should see output. pressing control C should highlight the counter
+    was incremented
+
+For basic_test.c:
+- Update bcc_prog.py to use udp_counter, and use eth1 specifically!!!
+- make sure mtu of eth1 is set to 3400 and that ethtool combined is 1/2 total: https://trying2adult.com/what-is-xdp-and-how-do-you-use-it-in-linux-amazon-ec2-example/
+- before running bcc_prog.py, should be able to run ping -I eth1 8.8.8.8 and it will work
+- then bcc_prog.py, while that runs in another window run ping -I eth1 8.8.8.8 and it should fail
+- stop bcc_prog.py, and then run ping -I eth1 8.8.8.8, should work again. if not, run ip link set dev eth1 xdp off
