@@ -9,9 +9,9 @@
 
 import sys
 import os
-import ast
-import compiler
-from compiler.ast import *
+from ast import *
+# import compiler
+# from compiler.ast import *
 
 # SimpleExpression Node Guide :
   # NODE TYPE : Module
@@ -100,24 +100,24 @@ def print_expressions(simple_expression):
 		simple_expression = simple_expression.prev
 	count = 0
 
-	print '\nSimple Expression Linked List\n- - - - - - - -'
+	print ('\nSimple Expression Linked List\n- - - - - - - -')
 
-	print '[count]\t[type]\t\t[input1]\t[input2]\t[output]'
+	print ('[count]\t[type]\t\t[input1]\t[input2]\t[output]')
 	while simple_expression != None:
 		if simple_expression.type == "StartList" :
-			print '[{0}]\t{1}\t{2}\t\t{3}\t\t{4}'.format(count, simple_expression.type, simple_expression.input1, simple_expression.input2, simple_expression.output)
+			print ('[{0}]\t{1}\t{2}\t\t{3}\t\t{4}'.format(count, simple_expression.type, simple_expression.input1, simple_expression.input2, simple_expression.output))
 		elif simple_expression.type == "UnarySub" :
-			print '[{0}]\t{1}\t{2}\t\t{3}\t\t{4}'.format(count, simple_expression.type, simple_expression.input1, simple_expression.input2, simple_expression.output)
+			print ('[{0}]\t{1}\t{2}\t\t{3}\t\t{4}'.format(count, simple_expression.type, simple_expression.input1, simple_expression.input2, simple_expression.output))
 		else:
-			print '[{0}]\t{1}\t\t{2}\t\t{3}\t\t{4}'.format(count, simple_expression.type, simple_expression.input1, simple_expression.input2, simple_expression.output)
+			print ('[{0}]\t{1}\t\t{2}\t\t{3}\t\t{4}'.format(count, simple_expression.type, simple_expression.input1, simple_expression.input2, simple_expression.output))
 		count += 1
 		simple_expression = simple_expression.next
-	print '- - - - - - - -\n'
+	print ('- - - - - - - -\n')
 	return
 
-def parse(program):
-	ast = compiler.parseFile(program)
-	return ast
+# def parse(program):
+# 	ast = parse(program)#compiler.parseFile(program)
+# 	return ast
 
 # recursively breaking complex expression into simple expressions, pass in
 # ast object and simple expression linked list, pass up simple expression linked
@@ -268,7 +268,6 @@ def traverse_list(linkListNodes, fileNameToWriteTo):
 
 		#covert simple expression nodes to assembly strings
 		while currentNode:
-			#print(currentNode.type + "==>" + currentNode.next.type)
 			currentNodeAssembly, stack_offset, start_stack_allocation = convertNodeToAssembly(currentNode, variableLocations, stack_offset, start_stack_allocation)
 			lines.append(currentNodeAssembly)
 			currentNode = currentNode.next
@@ -292,17 +291,19 @@ def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_s
 	if nodeSupplied.type == "StartList": # done
 		returnValue = ".globl main\nmain:\n\tpushl %ebp\n\tmovl %esp, %ebp\n"
 
+
 	elif nodeSupplied.type == "Input": # done
 		start_stack_allocation += 4
 		stack_offset += 4
 		variableLocations[nodeSupplied.input1] = "-{0}(%ebp)".format(stack_offset)
 		returnValue = "\tcall input\n\tmovl %eax, {0}\n".format(variableLocations[nodeSupplied.input1])
 
+
 	elif nodeSupplied.type == "Const":
 		returnValue = "\tmovl ${0}, %eax\n".format(nodeSupplied.output)
 
+
 	elif nodeSupplied.type == "Assign":
-		# print "type [{0}]\ninput1 [{1}]\ninput2 [{2}]\noutput [{3}]\n".format(nodeSupplied.type, nodeSupplied.input1, nodeSupplied.input2, nodeSupplied.output)
 		start_stack_allocation += 4
 		stack_offset += 4
 		variableLocations[nodeSupplied.input1] = "-{0}(%ebp)".format(stack_offset)
@@ -317,9 +318,7 @@ def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_s
 
 
 	elif nodeSupplied.type == "Add":
-		# print 'type [{0}] input1 [{1}] input2 [{2}] output [{3}]'.format(nodeSupplied.type, nodeSupplied.input1, nodeSupplied.input2, nodeSupplied.output)
 		#firt case, variable is location on stack, second case it is a constant. So check location dict, else grab value.
-			# print 'true  if [{0}]'.format(left_side)
 		if variableLocations.has_key(nodeSupplied.input1):
 			left_side = variableLocations[nodeSupplied.input1]
 		elif variableLocations.has_key(get_value(nodeSupplied, nodeSupplied.input1)):
@@ -341,14 +340,11 @@ def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_s
 				right_side = variableLocations[get_value(nodeSupplied, nodeSupplied.input2)]
 
 
-		# left_side = variableLocations[nodeSupplied.input1] if variableLocations.has_key(nodeSupplied.input1) else '$' + str(get_value(nodeSupplied, nodeSupplied.input1))
-		# right_side = variableLocations[nodeSupplied.input2] if variableLocations.has_key(nodeSupplied.input2) else '$' + str(get_value(nodeSupplied, nodeSupplied.input2))
+
 		start_stack_allocation += 4
 		stack_offset += 4
 		variableLocations[nodeSupplied.output] = "-{0}(%ebp)".format(stack_offset)
 		returnValue = "\tmovl {0}, %eax\n\taddl {1}, %eax\n\tmovl %eax, -{2}(%ebp)\n".format(left_side, right_side, stack_offset)
-		# valueDictionary.update(nodeSupplied.output, returnValue)
-		# valueDictionary[nodeSupplied.output] = returnValue
 
 	elif nodeSupplied.type == "Print":
 
@@ -380,34 +376,18 @@ def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_s
 
 	return returnValue, stack_offset, start_stack_allocation
 
+
+
+
 def main():
 	with open(sys.argv[1], "r") as program_file:
 		file_text = program_file.read()
 		print('\nTest File [{1}]\n- - - - - - - -\n{0}- - - - - - - -'.format(file_text, sys.argv[1]))
-		ast = compiler.parse(file_text)
+		ast = parse(file_text)#compiler.parse(file_text)
+		print(dump(ast))
 	# print '\nAST\n- - - - - - - -\n{0}\n- - - - - - - -'.format(ast)
 	first_expression = flatten_expression(ast)
 	print_expressions(first_expression)
 	traverse_list(first_expression, sys.argv[1].replace(".py",".s"))
 
-	# os.system('gcc -m32 -g {0} runtime/libpyyruntime.a -lm -o {1}'.format(sys.argv[1].replace(".py",".s"), sys.argv[1][:-3]))
-	# os.system('cat {0} | {1} > {2}'.format(sys.argv[1].replace(".py",".in"), sys.argv[1][:-3], sys.argv[1]).replace(".py",".out"))
-	#
-	# print '\ninput: '
-	# with open(sys.argv[1].replace(".py",".in")) as f:
-	# 	contents = f.read()
-	# 	print contents
-	#
-	# print '\noutput: '
-	# with open(sys.argv[1].replace(".py",".out")) as f:
-	# 	contents = f.read()
-	# 	print contents
 main()
-# starting :
-#     print - input() + 2
-#
-# final :
-#     temp0 = input()
-#     temp1 = - input()
-#     temp2 = temp1 + 2
-#     print temp2
