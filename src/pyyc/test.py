@@ -91,3 +91,19 @@ def basic_test(ctx):
 #     ]
 # )
 
+
+# IDEA FOR BPF MAPS - MAYBE MAKE THEM SPECIAL DICTS
+# IF WE CATCH AN EXPLICIT "bpf_list()" OR "b_{}", SOMETHING LIKE THAT,
+# THEN WE KNOW ITS A BPF MAP
+# OTHERWISE, ITS AN EXPLICIT LIST
+
+# BPF MAPS:
+#     BPF_TABLE -> analogue is an explictly declared, ephemeral 2d array. 
+#         so if the code has: [[elem, elem]] its just normal 2d array, but maybe if they say
+#         var = [[elem,elem]]_bpf or is maybe declared as a class i.e. var = bpf_table(), then we know
+#         to handle as a bpf table.
+#         other cases would be handled similarly
+#     BPF_HASH -> analogue is an explictly declared, ephemeral dict
+#     BPF_ARRAY -> analogue is an explictly declared, ephemeral array
+#     BPF_HISTOGRAM -> no analogue
+#     BPF_PERF_ARRAY -> no analogue
