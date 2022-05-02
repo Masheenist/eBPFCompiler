@@ -80,17 +80,17 @@ def print_expressions(simple_expression):
 	print ('- - - - - - - -\n')
 	return
 
-
 # recursively breaking complex expression into simple expressions, pass in
 # ast object and simple expression linked list, pass up simple expression linked
 # list only.
 def recursive_flatten(ast, expression_list, VT):
 
 	if isinstance(ast, Module):
-		return recursive_flatten(ast.body, expression_list, VT)
-
-	elif isinstance(ast, Stmt):
-		for node in ast.nodes:
+	# 	return recursive_flatten(ast.body, expression_list, VT)
+	#
+	# elif isinstance(ast, Stmt):
+	# 	for node in ast.nodes:
+		for node in ast.body:
 			recursive_flatten(node, expression_list, VT)
 		# recursive_flatten(x, expression_list, VT) for x in ast.nodes
 		prev_expression = get_last(expression_list)
@@ -292,10 +292,10 @@ def print_python3_ast(ast, tabs=0):
 		# print left
 		print("\t"*(tabs+1) + "left=")
 		print_python3_ast(ast.left, tabs=tabs+2)
-		
+
 		# print op
 		print("\t"*(tabs+1) + "op=" + dump(ast.op))
-		
+
 		# print right
 		print("\t"*(tabs+1) + "right=")
 		print_python3_ast(ast.right, tabs=tabs+2)
@@ -306,10 +306,10 @@ def print_python3_ast(ast, tabs=0):
 
 	elif isinstance(ast, UnaryOp):
 		print ("\t"*tabs + "UnaryOp(")
-		
+
 		# print op
 		print("\t"*(tabs+1) + "op=" + dump(ast.op))
-		
+
 		# print operand
 		print("\t"*(tabs+1) + "operand=")
 		print_python3_ast(ast.operand, tabs=tabs+2)
@@ -346,7 +346,7 @@ def print_python3_ast(ast, tabs=0):
 		# has id, and ctx (context, unimportant i think)
 		print("\t"*tabs + dump(ast))
 
-	
+
 
 	elif isinstance(ast, arguments):
 		print("\t"*tabs + "arguments(")
@@ -410,7 +410,7 @@ def print_python3_ast(ast, tabs=0):
 	elif isinstance(ast, Str):
 		# just has s
 		print("\t"*tabs + dump(ast))
-	
+
 
 
 	elif isinstance(ast, arg):
@@ -435,13 +435,15 @@ def main():
 		file_text = program_file.read()
 		print('\nTest File [{1}]\n- - - - - - - -\n{0}- - - - - - - -'.format(file_text, sys.argv[1]))
 		ast = parse(file_text)#compiler.parse(file_text)
+		# print("ast:[{0}]".format(ast))
 		print_python3_ast(ast)
-		print()
+		# print()
 		#print(dump(ast))
 		#print()
-	# print '\nAST\n- - - - - - - -\n{0}\n- - - - - - - -'.format(ast)
+	print('\nAST\n- - - - - - - -\n{0}\n- - - - - - - -'.format(ast))
 	first_expression = flatten_expression(ast)
 	print_expressions(first_expression)
 	traverse_list(first_expression, sys.argv[1].replace(".py",".s"))
 
 main()
+
