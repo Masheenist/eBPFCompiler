@@ -140,7 +140,6 @@ def convert_CIR(ast, inst_list, lambda_count):
 
 def check_for_def(name, inst_list):
 	for statement in inst_list:
-		# print(statement)
 		if 'int {0} '.format(name) in statement:
 			return True
 		elif 'int {0};'.format(name) in statement:

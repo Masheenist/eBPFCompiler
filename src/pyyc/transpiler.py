@@ -193,11 +193,11 @@ def main():
 		# print(dump(ast))
 		IRC = convert_CIR(ast, [], 0)
 		move_lamdas(IRC)
-		# print_IRC(IRC)
+		print_IRC(IRC)
 		convert_to_c(IRC, sys.argv[1].replace('.py', '.c'))
 
-		# f = open(sys.argv[1].replace('.py', '.c'), "r")
-		# print("\n\nC FILE CREATED:\n\n{0}\n".format(f.read()))
+		f = open(sys.argv[1].replace('.py', '.c'), "r")
+		print("\n\nC FILE CREATED:\n\n{0}\n".format(f.read()))
 
 		# print()
 		#print(dump(ast))
