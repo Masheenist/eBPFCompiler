@@ -79,8 +79,16 @@ def convert_CIR(ast, inst_list):
 		return return_string[1]
 	elif isinstance(ast, Return):
 		return ["RETURN", "return " + str(convert_CIR(ast.value, inst_list))]
+	elif isinstance(ast, Constant):
+		if ast.value == False:
+			return 0
+		elif ast.value == True:
+			return 1
+		else:
+			print("Constant value not matched! {1}{0}".format(ast.value, type(ast.value)))
+		# return ast.value
 	else:
-		print(("UNCAUGHT TYPE " + str(type(ast).__name__)))
+		print(("CONVERT UNCAUGHT TYPE " + str(type(ast).__name__)))
 		print(("\t"+ dump(ast)))
 	return inst_list
 
