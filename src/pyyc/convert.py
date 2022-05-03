@@ -8,16 +8,9 @@ def convert_CIR(ast, inst_list):
 	elif isinstance(ast, FunctionDef):
 		name = ast.name
 		func_args_list = convert_CIR(ast.args, inst_list)
-
-		# print("FUNCDEF_NAME: [{0}]".format(name))
-		# print("FUNCDEF_ARGS: {0}".format(func_args_list))
 		func_body = []
 		for entry in ast.body:
 			func_body.append(convert_CIR(entry, inst_list))
-			# print("BODY: [{0}]".format(func_body[-1]))
-		# if ast.returns:
-		# 	func_body.append(str(ast.returns))
-		# 	print("FUNCDEF_RETURNS: [{0}]]".format(ast.returns))
 		return [name, func_args_list, func_body]
 	elif isinstance(ast, Assign):
 		if len(ast.targets) != 0:
@@ -67,7 +60,6 @@ def convert_CIR(ast, inst_list):
 			args_list = []
 			for entry in ast.args:
 				args_list.append(convert_CIR(entry, inst_list))
-				# convert_CIR(entry, inst_list)
 			return args_list
 	elif isinstance(ast, Num):
 		const_num_list = re.findall(r'\d+', str(dump(ast)))
@@ -86,7 +78,43 @@ def convert_CIR(ast, inst_list):
 			return 1
 		else:
 			print("Constant value not matched! {1}{0}".format(ast.value, type(ast.value)))
-		# return ast.value
+	elif isinstance(ast, If):
+
+		op_sym = ""
+		if isinstance(ast.test.ops[0], Gt):
+			op_sym = ">"
+		elif isinstance(ast.test.ops[0], Lt):
+			op_sym = "<"
+		elif isinstance(ast.test.ops[0], GtE):
+			op_sym = ">="
+		elif isinstance(ast.test.ops[0], LtE):
+			op_sym = "<="
+		elif isinstance(ast.test.ops[0], Eq):
+			op_sym = "!="
+		elif isinstance(ast.test.ops[0], NotEq):
+			op_sym = "<="
+		else:
+			print("op type {0}\nop {1}".format(type(ast.test.ops[0], ast.test.ops[0])))
+			# print("op dump {0}".format(dump(ast.test.ops)))
+		if isinstance(ast.test.left, Constant):
+			left_side = ast.test.left.value
+		elif isinstance(ast.test.left, Name):
+			left_side = ast.test.left.id
+		if isinstance(ast.test.comparators[0], Constant):
+			right_side = ast.test.comparators[0].value
+		elif isinstance(ast.test.comparators[0], Name):
+			right_side = ast.test.comparators[0].id
+
+
+		then_body = []
+		for entry in ast.body:
+			then_body.append(convert_CIR(entry, inst_list))
+
+		else_body = []
+		for entry in ast.orelse:
+			else_body.append(convert_CIR(entry, inst_list))
+		return ["IF", '{0} {1} {2}'.format(left_side, op_sym, right_side), then_body, else_body]
+
 	else:
 		print(("CONVERT UNCAUGHT TYPE " + str(type(ast).__name__)))
 		print(("\t"+ dump(ast)))
@@ -108,18 +136,29 @@ def handle_line(statement, file_lines, tabs):
 		needs_def = True if not check_for_def(statement[1].split(' = ')[0], file_lines) else False
 		if needs_def:
 			print_string += "int "
-	print_string += statement[1]
-	print_string += ";"
-	if "return " in print_string:
-		print_string += "\n"
+	if statement[0] == 'IF':
+		print("FOUND IF {0}".format(statement))
+		print_string += "if ({0}){{\n".format(statement[1])
+		for condition in statement[2]:
+			print_string += handle_line(condition, file_lines, tabs+1)
+		print_string += "\n"+ str("\t"*tabs) +"}"
+		if statement[3] != []:
+			print_string += " else {\n"
+			else_conditions = []
+			for condition in statement[3]:
+				print_string += handle_line(condition, file_lines, tabs+1)
+			print_string += "\n"+ str("\t"*tabs) +"}"
+	else:
+		print_string += statement[1]
+		print_string += ";"
+		if "return " in print_string:
+			print_string += "\n"
 	return print_string
 
 def convert_to_c(inst_list, filename):
 	file_lines = []
+	tabs = 0
 	for statement in inst_list:
-		tabs = 0
-		# FUNCTION - we pull out func definion, but handle body with the rest
-		tabs = 0
 		if len(statement) == 3:
 			tabs += 1
 			func_call_str = "\nint {0}(".format(statement[0]) + str(["int {0}, ".format(x) for x in statement[1]] )[2:-4].replace("', '", "")+ "):"
@@ -127,35 +166,10 @@ def convert_to_c(inst_list, filename):
 			file_lines.append(func_call_str)
 			for body_line in statement[2]:
 				file_lines.append(handle_line(body_line, file_lines, tabs))
-			# statement = statement[2]
+			tabs -= 1
 		else:
 			file_lines.append(handle_line(statement, file_lines, tabs))
-		# # NON-FUNCTION definitions (e.g., regular code lines, or function body)
-		# for item in statement[1:]:
-		# 	print_string = ""
-		# 	needs_def = False
-		# 	if statement[0] == 'ASSIGN':
-		# 		print("ITEM[0] = {0}".format(item[0]))
-		# 		needs_def = True if not check_for_def(item.split(' = ')[0], file_lines) else False
-		# 		if needs_def:
-		# 			print_string += "int "
-		# 	elif isinstance(statement[0], list):
-		# 		:
-		# 		print("ITEM[0] = {0}".format(item[0]))
-		# 		# needs_def = True if not check_for_def(item.split(' = ')[0][1], file_lines) else False
-		# 		if needs_def:
-		# 			print_string += "int "
-		#
-		# 	if isinstance(item, str):
-		# 		print_string += "\t"*tabs + item
-		# 		# print(print_string)
-		# 	if isinstance(item, list):
-		# 		print_string += "\t"*tabs + item[1]
-		# 		# print(print_string)
-		# 	print_string += ";"
-		# 	if "return " in print_string:
-		# 		print_string += "\n"
-		# 	file_lines.append(print_string)
+
 	with open(filename, 'w') as f:
 		for line in file_lines:
 			# print(strline)
