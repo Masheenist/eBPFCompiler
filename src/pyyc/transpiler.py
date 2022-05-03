@@ -170,33 +170,35 @@ def print_python3_ast(ast, tabs=0):
 
 
 
-def convert_expression(ast, inst_list):
+def convert_CIR(ast, inst_list):
 	if isinstance(ast, Module):
 		for entry in ast.body:
-			convert_expression(entry, inst_list)
+			inst_list.append(convert_CIR(entry, inst_list))
 	elif isinstance(ast, FunctionDef):
 		name = ast.name
-		func_args_list = convert_expression(ast.args, inst_list)
-		print("FUNCDEF_NAME: [{0}]".format(name))
-		print("FUNCDEF_ARGS: {0}".format(func_args_list))
+		func_args_list = convert_CIR(ast.args, inst_list)
+
+		# print("FUNCDEF_NAME: [{0}]".format(name))
+		# print("FUNCDEF_ARGS: {0}".format(func_args_list))
 		func_body = []
 		for entry in ast.body:
-			func_body.append(convert_expression(entry, inst_list))
-			print("BODY: [{0}]".format(func_body[-1]))
-		if ast.returns:
-			print("FUNCDEF_RETURNS: [{0}]]".format(ast.returns))
+			func_body.append(convert_CIR(entry, inst_list))
+			# print("BODY: [{0}]".format(func_body[-1]))
+		# if ast.returns:
+		# 	func_body.append(str(ast.returns))
+		# 	print("FUNCDEF_RETURNS: [{0}]]".format(ast.returns))
+		return [name, func_args_list, func_body]
 	elif isinstance(ast, Assign):
 		if len(ast.targets) != 0:
 			target_name = []
 			for entry in ast.targets:
-				target_name.append(convert_expression(entry, inst_list))
-		target_value = convert_expression(ast.value, inst_list)
-
+				target_name.append(convert_CIR(entry, inst_list))
+		target_value = convert_CIR(ast.value, inst_list)
 		return(["ASSIGN", "{} = {}".format(target_name[-1], target_value)])
 	elif isinstance(ast, Expr):
 		if isinstance(ast.value, Call):
 			function_name = ast.value.func.id
-			function_arguments = convert_expression(ast.value, inst_list)
+			function_arguments = convert_CIR(ast.value, inst_list)
 			print_string = "{0}(".format(function_name)
 			first = True
 			for argu in function_arguments:
@@ -208,21 +210,23 @@ def convert_expression(ast, inst_list):
 			print_string+=")"
 			return(["CALL", print_string])
 	elif isinstance(ast, BinOp):
-		left_exp = convert_expression(ast.left, inst_list)
+		left_exp = convert_CIR(ast.left, inst_list)
 		binop_op = str(dump(ast.op))[:-2]
 		binop_sy  = ''
 		if binop_op == 'Add':
 			binop_sy = '+'
-		right_exp = convert_expression(ast.right, inst_list)
+		right_exp = convert_CIR(ast.right, inst_list)
 		return("{} {} {}".format(left_exp, binop_sy, right_exp))
 	elif isinstance(ast, UnaryOp):
-		print("UNARYOP_OP: [{0}]".format(dump(ast.op)))
-		print("UNARYOP_OPERAND: [{0}]".format(dump(ast.operand)))
+		if isinstance(ast.operand, Constant):
+			return('-'+str(ast.operand.value))
+		elif isinstance(ast.operand, Name):
+			return '-'+str(ast.operand.id)
 	elif isinstance(ast, Call):
 		if len(ast.args) != 0:
 			call_args = []
 			for entry in ast.args:
-				call_args.append(convert_expression(entry, inst_list))
+				call_args.append(convert_CIR(entry, inst_list))
 			return call_args
 	elif isinstance(ast, Name):
 		name_string = str(dump(ast)).split('\'')[1]
@@ -231,8 +235,8 @@ def convert_expression(ast, inst_list):
 		if len(ast.args) != 0:
 			args_list = []
 			for entry in ast.args:
-				args_list.append(convert_expression(entry, inst_list))
-				# convert_expression(entry, inst_list)
+				args_list.append(convert_CIR(entry, inst_list))
+				# convert_CIR(entry, inst_list)
 			return args_list
 	elif isinstance(ast, Num):
 		const_num_list = re.findall(r'\d+', str(dump(ast)))
@@ -243,10 +247,22 @@ def convert_expression(ast, inst_list):
 		return_string = str(dump(ast)).split('\'')
 		return return_string[1]
 	elif isinstance(ast, Return):
-		return ["RETURN",ast.value.id]
+		return ["RETURN", convert_CIR(ast.value, inst_list)]
 	else:
 		print(("UNCAUGHT TYPE " + str(type(ast).__name__)))
 		print(("\t"+ dump(ast)))
+	return inst_list
+
+def print_IRC(inst_list):
+	for statement in inst_list:
+		# FUNCTION
+		if len(statement) == 3:
+			print("FUNC_NAME : {0}".format(statement[0]))
+			print("FUNC_ARGS : {0}".format(statement[1]))
+			for item in statement[2]:
+				print("BODY : {0}".format(item))
+		else:
+			print(statement)
 
 
 def main():
@@ -255,8 +271,12 @@ def main():
 		print('\nTest File [{1}]\n- - - - - - - -\n{0}- - - - - - - -'.format(file_text, sys.argv[1]))
 		ast = parse(file_text)#compiler.parse(file_text)
 		# print("ast:[{0}]".format(ast))
-		# print_python3_ast(ast)
-		convert_expression(ast, [])
+		print_python3_ast(ast)
+
+		IRC = convert_CIR(ast, [])
+		print_IRC(IRC)
+
+		# convert_to_c(IRC, sys.argv[1].replace('.py', '.c'))
 		# print()
 		#print(dump(ast))
 		#print()
