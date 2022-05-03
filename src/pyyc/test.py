@@ -8,38 +8,38 @@
 #         Assign(
 #             targets=[
 #                 Name(id='temp0', ctx=Store())
-#             ], 
+#             ],
 #             value=Call(
-#                func=Name(id='input', ctx=Load()), 
-#                args=[], 
+#                func=Name(id='input', ctx=Load()),
+#                args=[],
 #                keywords=[]
 #             )
-#         ), 
+#         ),
 #         Assign(
-#             targets=[Name(id='temp1', ctx=Store())], 
+#             targets=[Name(id='temp1', ctx=Store())],
 #             value=UnaryOp(
-#                 op=USub(), 
+#                 op=USub(),
 #                 operand=Call(
-#                     func=Name(id='input', ctx=Load()), 
-#                     args=[], 
+#                     func=Name(id='input', ctx=Load()),
+#                     args=[],
 #                     keywords=[]
 #                 )
 #             )
-#         ), 
+#         ),
 #         Assign(
 #             targets=[
 #                 Name(id='temp2', ctx=Store())
-#             ], 
+#             ],
 #             value=BinOp(
-#                 left=Name(id='temp1', ctx=Load()), 
-#                 op=Add(), 
+#                 left=Name(id='temp1', ctx=Load()),
+#                 op=Add(),
 #                 right=Num(n=2)
 #             )
-#         ), 
+#         ),
 #         Expr(
 #             value=Call(
-#                 func=Name(id='print', ctx=Load()), 
-#                 args=[Name(id='temp2', ctx=Load())], 
+#                 func=Name(id='print', ctx=Load()),
+#                 args=[Name(id='temp2', ctx=Load())],
 #                 keywords=[]
 #             )
 #         )
@@ -48,44 +48,43 @@
 
 
 def basic_test(ctx):
-    b = 1+1
     bpf_trace_printk("recieved packet!\n")
     return XDP_DROP
 
 # Module(
 #     body=[
 #         FunctionDef(
-#             name='basic_test', 
+#             name='basic_test',
 #             args=arguments(
 #                 args=[
 #                     arg(arg='ctx', annotation=None)
-#                 ], 
-#                 vararg=None, 
-#                 kwonlyargs=[], 
-#                 kw_defaults=[], 
-#                 kwarg=None, 
+#                 ],
+#                 vararg=None,
+#                 kwonlyargs=[],
+#                 kw_defaults=[],
+#                 kwarg=None,
 #                 defaults=[]
-#             ), 
+#             ),
 #             body=[
 #                 Assign(
-#                     targets=[Name(id='b', ctx=Store())], 
+#                     targets=[Name(id='b', ctx=Store())],
 #                     value=BinOp(
-#                         left=Num(n=1), 
-#                         op=Add(), 
+#                         left=Num(n=1),
+#                         op=Add(),
 #                         right=Num(n=1)
 #                     )
-#                 ), 
+#                 ),
 #                 Expr(
 #                     value=Call(
-#                         func=Name(id='bpf_trace_printk', ctx=Load()), 
+#                         func=Name(id='bpf_trace_printk', ctx=Load()),
 #                         args=[Str(s='recieved packet!\n')], keywords=[]
 #                     )
-#                 ), 
+#                 ),
 #                 Return(
 #                     value=Name(id='XDP_DROP', ctx=Load())
 #                 )
-#             ], 
-#             decorator_list=[], 
+#             ],
+#             decorator_list=[],
 #             returns=None
 #         )
 #     ]
@@ -98,7 +97,7 @@ def basic_test(ctx):
 # OTHERWISE, ITS AN EXPLICIT LIST
 
 # BPF MAPS:
-#     BPF_TABLE -> analogue is an explictly declared, ephemeral 2d array. 
+#     BPF_TABLE -> analogue is an explictly declared, ephemeral 2d array.
 #         so if the code has: [[elem, elem]] its just normal 2d array, but maybe if they say
 #         var = [[elem,elem]]_bpf or is maybe declared as a class i.e. var = bpf_table(), then we know
 #         to handle as a bpf table.

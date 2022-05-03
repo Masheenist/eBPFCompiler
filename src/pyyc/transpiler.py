@@ -11,7 +11,7 @@ import sys
 import os
 import re
 from ast import *
-
+from convert import convert_CIR, convert_to_c
 
 
 def print_python3_ast(ast, tabs=0):
@@ -169,90 +169,6 @@ def print_python3_ast(ast, tabs=0):
 		print("\t"*tabs + dump(ast))
 
 
-
-def convert_CIR(ast, inst_list):
-	if isinstance(ast, Module):
-		for entry in ast.body:
-			inst_list.append(convert_CIR(entry, inst_list))
-	elif isinstance(ast, FunctionDef):
-		name = ast.name
-		func_args_list = convert_CIR(ast.args, inst_list)
-
-		# print("FUNCDEF_NAME: [{0}]".format(name))
-		# print("FUNCDEF_ARGS: {0}".format(func_args_list))
-		func_body = []
-		for entry in ast.body:
-			func_body.append(convert_CIR(entry, inst_list))
-			# print("BODY: [{0}]".format(func_body[-1]))
-		# if ast.returns:
-		# 	func_body.append(str(ast.returns))
-		# 	print("FUNCDEF_RETURNS: [{0}]]".format(ast.returns))
-		return [name, func_args_list, func_body]
-	elif isinstance(ast, Assign):
-		if len(ast.targets) != 0:
-			target_name = []
-			for entry in ast.targets:
-				target_name.append(convert_CIR(entry, inst_list))
-		target_value = convert_CIR(ast.value, inst_list)
-		return(["ASSIGN", "{} = {}".format(target_name[-1], target_value)])
-	elif isinstance(ast, Expr):
-		if isinstance(ast.value, Call):
-			function_name = ast.value.func.id
-			function_arguments = convert_CIR(ast.value, inst_list)
-			print_string = "{0}(".format(function_name)
-			first = True
-			for argu in function_arguments:
-				if not first:
-					print_string += ", {0}".format(arg)
-				else:
-					first = False
-					print_string += argu
-			print_string+=")"
-			return(["CALL", print_string])
-	elif isinstance(ast, BinOp):
-		left_exp = convert_CIR(ast.left, inst_list)
-		binop_op = str(dump(ast.op))[:-2]
-		binop_sy  = ''
-		if binop_op == 'Add':
-			binop_sy = '+'
-		right_exp = convert_CIR(ast.right, inst_list)
-		return("{} {} {}".format(left_exp, binop_sy, right_exp))
-	elif isinstance(ast, UnaryOp):
-		if isinstance(ast.operand, Constant):
-			return('-'+str(ast.operand.value))
-		elif isinstance(ast.operand, Name):
-			return '-'+str(ast.operand.id)
-	elif isinstance(ast, Call):
-		if len(ast.args) != 0:
-			call_args = []
-			for entry in ast.args:
-				call_args.append(convert_CIR(entry, inst_list))
-			return call_args
-	elif isinstance(ast, Name):
-		name_string = str(dump(ast)).split('\'')[1]
-		return name_string
-	elif isinstance(ast, arguments):
-		if len(ast.args) != 0:
-			args_list = []
-			for entry in ast.args:
-				args_list.append(convert_CIR(entry, inst_list))
-				# convert_CIR(entry, inst_list)
-			return args_list
-	elif isinstance(ast, Num):
-		const_num_list = re.findall(r'\d+', str(dump(ast)))
-		return const_num_list[0]
-	elif isinstance(ast, Str):
-		return str("\"{0}\"".format(str(ast.value)[:-2]))
-	elif isinstance(ast, arg):
-		return_string = str(dump(ast)).split('\'')
-		return return_string[1]
-	elif isinstance(ast, Return):
-		return ["RETURN", convert_CIR(ast.value, inst_list)]
-	else:
-		print(("UNCAUGHT TYPE " + str(type(ast).__name__)))
-		print(("\t"+ dump(ast)))
-	return inst_list
-
 def print_IRC(inst_list):
 	for statement in inst_list:
 		# FUNCTION
@@ -264,7 +180,6 @@ def print_IRC(inst_list):
 		else:
 			print(statement)
 
-
 def main():
 	with open(sys.argv[1], "r") as program_file:
 		file_text = program_file.read()
@@ -275,12 +190,13 @@ def main():
 
 		IRC = convert_CIR(ast, [])
 		print_IRC(IRC)
+		convert_to_c(IRC, sys.argv[1].replace('.py', '.c'))
 
-		# convert_to_c(IRC, sys.argv[1].replace('.py', '.c'))
+		f = open(sys.argv[1].replace('.py', '.c'), "r")
+		print("\n\nC FILE CREATED:\n\n{0}\n".format(f.read()))
 		# print()
 		#print(dump(ast))
 		#print()
-	print("DONE")
 	# print('\nAST\n- - - - - - - -\n{0}\n- - - - - - - -'.format(ast))
 	# first_expression = flatten_expression(ast)
 	# print_expressions(first_expression)
