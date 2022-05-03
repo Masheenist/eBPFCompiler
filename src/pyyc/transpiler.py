@@ -11,7 +11,7 @@ import sys
 import os
 import re
 from ast import *
-from convert import convert_CIR, convert_to_c
+from convert import convert_CIR, convert_to_c, move_lamdas
 
 
 def print_python3_ast(ast, tabs=0):
@@ -190,13 +190,14 @@ def main():
 		ast = parse(file_text)#compiler.parse(file_text)
 		# print("ast:[{0}]".format(ast))
 		# print_python3_ast(ast)
-
-		IRC = convert_CIR(ast, [])
-		print_IRC(IRC)
+		# print(dump(ast))
+		IRC = convert_CIR(ast, [], 0)
+		move_lamdas(IRC)
+		# print_IRC(IRC)
 		convert_to_c(IRC, sys.argv[1].replace('.py', '.c'))
-		
-		f = open(sys.argv[1].replace('.py', '.c'), "r")
-		print("\n\nC FILE CREATED:\n\n{0}\n".format(f.read()))
+
+		# f = open(sys.argv[1].replace('.py', '.c'), "r")
+		# print("\n\nC FILE CREATED:\n\n{0}\n".format(f.read()))
 
 		# print()
 		#print(dump(ast))

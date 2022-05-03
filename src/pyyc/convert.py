@@ -1,28 +1,36 @@
 import re
 from ast import *
 
-def convert_CIR(ast, inst_list):
+def convert_CIR(ast, inst_list, lambda_count):
+	lambda_count = 0
 	if isinstance(ast, Module):
 		for entry in ast.body:
-			inst_list.append(convert_CIR(entry, inst_list))
+			inst_list.append(convert_CIR(entry, inst_list, lambda_count))
 	elif isinstance(ast, FunctionDef):
 		name = ast.name
-		func_args_list = convert_CIR(ast.args, inst_list)
+		func_args_list = convert_CIR(ast.args, inst_list, lambda_count)
 		func_body = []
 		for entry in ast.body:
-			func_body.append(convert_CIR(entry, inst_list))
+			func_body.append(convert_CIR(entry, inst_list, lambda_count))
+		return [name, func_args_list, func_body]
+	elif isinstance(ast, Lambda):
+		name = "lambda_{0}".format(lambda_count)
+		func_args_list = convert_CIR(ast.args, inst_list, lambda_count)
+		lambda_count += 1
+		func_body = []
+		func_body.append(["RETURN", convert_CIR(ast.body, inst_list, lambda_count)])
 		return [name, func_args_list, func_body]
 	elif isinstance(ast, Assign):
 		if len(ast.targets) != 0:
 			target_name = []
 			for entry in ast.targets:
-				target_name.append(convert_CIR(entry, inst_list))
-		target_value = convert_CIR(ast.value, inst_list)
+				target_name.append(convert_CIR(entry, inst_list, lambda_count))
+		target_value = convert_CIR(ast.value, inst_list, lambda_count)
 		return(["ASSIGN", "{} = {}".format(target_name[-1], target_value)])
 	elif isinstance(ast, Expr):
 		if isinstance(ast.value, Call):
 			function_name = ast.value.func.id
-			function_arguments = convert_CIR(ast.value, inst_list)
+			function_arguments = convert_CIR(ast.value, inst_list, lambda_count)
 			print_string = "{0}(".format(function_name)
 			first = True
 			for argu in function_arguments:
@@ -33,13 +41,23 @@ def convert_CIR(ast, inst_list):
 					print_string += argu
 			print_string+=")"
 			return(["CALL", print_string])
+		if isinstance(ast.value, Lambda):
+			return convert_CIR(ast.value, inst_list, lambda_count)
 	elif isinstance(ast, BinOp):
-		left_exp = convert_CIR(ast.left, inst_list)
+		left_exp = convert_CIR(ast.left, inst_list, lambda_count)
 		binop_op = str(dump(ast.op))[:-2]
 		binop_sy  = ''
 		if binop_op == 'Add':
 			binop_sy = '+'
-		right_exp = convert_CIR(ast.right, inst_list)
+		elif binop_op == 'Sub':
+			binop_sy = '-'
+		elif binop_op == 'Mult':
+			binop_sy = '*'
+		elif binop_op == 'Div':
+			binop_sy = '/'
+		else:
+			print("type = {0}".format(dump(ast.op)))
+		right_exp = convert_CIR(ast.right, inst_list, lambda_count)
 		return("{} {} {}".format(left_exp, binop_sy, right_exp))
 	elif isinstance(ast, UnaryOp):
 		if isinstance(ast.operand, Constant):
@@ -50,7 +68,7 @@ def convert_CIR(ast, inst_list):
 		if len(ast.args) != 0:
 			call_args = []
 			for entry in ast.args:
-				call_args.append(convert_CIR(entry, inst_list))
+				call_args.append(convert_CIR(entry, inst_list, lambda_count))
 			return call_args
 	elif isinstance(ast, Name):
 		name_string = str(dump(ast)).split('\'')[1]
@@ -59,7 +77,7 @@ def convert_CIR(ast, inst_list):
 		if len(ast.args) != 0:
 			args_list = []
 			for entry in ast.args:
-				args_list.append(convert_CIR(entry, inst_list))
+				args_list.append(convert_CIR(entry, inst_list, lambda_count))
 			return args_list
 	elif isinstance(ast, Num):
 		const_num_list = re.findall(r'\d+', str(dump(ast)))
@@ -70,7 +88,7 @@ def convert_CIR(ast, inst_list):
 		return_string = str(dump(ast)).split('\'')
 		return return_string[1]
 	elif isinstance(ast, Return):
-		return ["RETURN", "return " + str(convert_CIR(ast.value, inst_list))]
+		return ["RETURN", "return " + str(convert_CIR(ast.value, inst_list, lambda_count))]
 	elif isinstance(ast, Constant):
 		if ast.value == False:
 			return 0
@@ -108,11 +126,11 @@ def convert_CIR(ast, inst_list):
 
 		then_body = []
 		for entry in ast.body:
-			then_body.append(convert_CIR(entry, inst_list))
+			then_body.append(convert_CIR(entry, inst_list, lambda_count))
 
 		else_body = []
 		for entry in ast.orelse:
-			else_body.append(convert_CIR(entry, inst_list))
+			else_body.append(convert_CIR(entry, inst_list, lambda_count))
 		return ["IF", '{0} {1} {2}'.format(left_side, op_sym, right_side), then_body, else_body]
 
 	else:
@@ -137,7 +155,6 @@ def handle_line(statement, file_lines, tabs):
 		if needs_def:
 			print_string += "int "
 	if statement[0] == 'IF':
-		print("FOUND IF {0}".format(statement))
 		print_string += "if ({0}){{\n".format(statement[1])
 		for condition in statement[2]:
 			print_string += handle_line(condition, file_lines, tabs+1)
@@ -154,6 +171,26 @@ def handle_line(statement, file_lines, tabs):
 		if "return " in print_string:
 			print_string += "\n"
 	return print_string
+
+def move_lamdas(inst_list):
+	statements_to_prepend = []
+	for k in range(len(inst_list)):
+		if len(inst_list[k]) != 2:
+			for i in range(len(inst_list[k][2])):
+				if inst_list[k][2][i][0][:6]== 'lambda':
+					args = inst_list[k][2][i][1]
+					args_str = ""
+					for arg in args:
+						args_str += "int {0}".format(arg) + ", "
+					args_str = args_str[:-2]
+					statements_to_prepend.append(inst_list[k][2][i])
+					inst_list[k][2][i] = ["CALL",  "{0}({1})".format(inst_list[k][2][i][0], args_str)]
+					# "{0}({1})".format(inst_list[k][2][i][0], args_str)
+					# statements_to_prepend.append(inst_list[k][2][i])
+	for i in range(len(statements_to_prepend)):
+		# print("INSERTING:{0}".format(statements_to_prepend[i]))
+		inst_list.insert(i, statements_to_prepend[i])
+	return inst_list
 
 def convert_to_c(inst_list, filename):
 	file_lines = []
