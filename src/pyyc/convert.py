@@ -87,15 +87,29 @@ def convert_CIR(ast, inst_list):
 def check_for_def(name, inst_list):
 	for statement in inst_list:
 		# print(statement)
-		if 'int {0}'.format(name) in statement:
+		if 'int {0} '.format(name) in statement:
+			return True
+		elif 'int {0};'.format(name) in statement:
 			return True
 	return False
+
+def handle_line(statement, file_lines, tabs):
+	print_string = "" + ("\t"*tabs)
+	needs_def = False
+	if statement[0] == 'ASSIGN':
+		needs_def = True if not check_for_def(statement[1].split(' = ')[0], file_lines) else False
+		if needs_def:
+			print_string += "int "
+	print_string += statement[1]
+	print_string += ";"
+	if "return " in print_string:
+		print_string += "\n"
+	return print_string
 
 def convert_to_c(inst_list, filename):
 	file_lines = []
 	for statement in inst_list:
 		tabs = 0
-
 		# FUNCTION - we pull out func definion, but handle body with the rest
 		tabs = 0
 		if len(statement) == 3:
@@ -103,27 +117,37 @@ def convert_to_c(inst_list, filename):
 			func_call_str = "\nint {0}(".format(statement[0]) + str(["int {0}, ".format(x) for x in statement[1]] )[2:-4].replace("', '", "")+ "):"
 			# print(func_call_str)
 			file_lines.append(func_call_str)
-			statement = statement[2]
-
-		# NON-FUNCTION definitions (e.g., regular code lines, or function body)
-		for item in statement[1:]:
-			print_string = ""
-			needs_def = False
-			if statement[0] == 'ASSIGN':
-				needs_def = True if not check_for_def(item.split(' = ')[0], file_lines) else False
-				if needs_def:
-					print_string += "int "
-
-			if isinstance(item, str):
-				print_string += "\t"*tabs + item
-				# print(print_string)
-			if isinstance(item, list):
-				print_string += "\t"*tabs + item[1]
-				# print(print_string)
-			print_string += ";"
-			if "return " in print_string:
-				print_string += "\n"
-			file_lines.append(print_string)
+			for body_line in statement[2]:
+				file_lines.append(handle_line(body_line, file_lines, tabs))
+			# statement = statement[2]
+		else:
+			file_lines.append(handle_line(statement, file_lines, tabs))
+		# # NON-FUNCTION definitions (e.g., regular code lines, or function body)
+		# for item in statement[1:]:
+		# 	print_string = ""
+		# 	needs_def = False
+		# 	if statement[0] == 'ASSIGN':
+		# 		print("ITEM[0] = {0}".format(item[0]))
+		# 		needs_def = True if not check_for_def(item.split(' = ')[0], file_lines) else False
+		# 		if needs_def:
+		# 			print_string += "int "
+		# 	elif isinstance(statement[0], list):
+		# 		:
+		# 		print("ITEM[0] = {0}".format(item[0]))
+		# 		# needs_def = True if not check_for_def(item.split(' = ')[0][1], file_lines) else False
+		# 		if needs_def:
+		# 			print_string += "int "
+		#
+		# 	if isinstance(item, str):
+		# 		print_string += "\t"*tabs + item
+		# 		# print(print_string)
+		# 	if isinstance(item, list):
+		# 		print_string += "\t"*tabs + item[1]
+		# 		# print(print_string)
+		# 	print_string += ";"
+		# 	if "return " in print_string:
+		# 		print_string += "\n"
+		# 	file_lines.append(print_string)
 	with open(filename, 'w') as f:
 		for line in file_lines:
 			# print(strline)

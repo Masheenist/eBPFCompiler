@@ -46,8 +46,10 @@
 #     ]
 # )
 
-
+a = 3 + 3
 def basic_test(ctx):
+    c = -a
+    b = 1 + 2
     bpf_trace_printk("recieved packet!\n")
     return XDP_DROP
 
