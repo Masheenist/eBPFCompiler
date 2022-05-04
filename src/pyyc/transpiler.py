@@ -46,6 +46,18 @@ def print_python3_ast(ast, tabs=0):
 		else:
 			print("\t"*(tabs+1) + "returns=None")
 		print("\t"*tabs + ")")
+	elif isinstance(ast, Tuple):
+		#print every element
+		print("\t"*tabs + "body=[")
+		#ctx is Store if the container is an assignment target (i.e. (x,y)=something), and Load otherwise
+		for entry in ast.body:
+			if (ast.ctx) == 0:
+				print_python3_ast(entry, tabs=tabs)
+			else:
+				print("\t"*(tabs) + "returns=None")
+		print("\t"*(tabs+1)+"],")
+		print("\t"*tabs + dump(ast))
+
 	elif isinstance(ast, Assign):
 		print ("\t"*tabs + "Assign(")
 		# print targets
@@ -164,7 +176,7 @@ def print_python3_ast(ast, tabs=0):
 	elif isinstance(ast, Return):
 		# just has value
 		print("\t"*tabs + dump(ast))
-
+	
 	elif isinstance(ast, Constant):
 		print("\t"*tabs + dump(ast))
 	else:
