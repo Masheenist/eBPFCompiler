@@ -10,10 +10,10 @@ counter = BPF_HISTOGRAM()
 
 #int udp_counter(struct xdp_md *ctx)
 #{
-def udp_counter(ctx: xdp_md):
+def udp_counter(ctx):
     #void *data = (void *)(long)ctx->data;
     data = ctx.data
-    #void *data_end = (void *)(long)ctx->data_end; <-- hardcoded
+    #void *data_end = (void *)(long)ctx->data_end; <-- implied by use of ctx struct
 
     #struct ethhdr *eth = data;
     #if ((void *)eth + sizeof(*eth) <= data_end)

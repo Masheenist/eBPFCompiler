@@ -8,7 +8,7 @@ For udp_counter.c:
     was incremented
 
 For basic_test.c:
-- Update bcc_prog.py to use udp_counter, and use eth1 specifically!!!
+- Update bcc_prog.py to use basic_test, and use eth1 specifically!!!
 - make sure mtu of eth1 is set to 3400 and that ethtool combined is 1/2 total: https://trying2adult.com/what-is-xdp-and-how-do-you-use-it-in-linux-amazon-ec2-example/
 - before running bcc_prog.py, should be able to run ping -I eth1 8.8.8.8 and it will work
 - then bcc_prog.py, while that runs in another window run ping -I eth1 8.8.8.8 and it should fail
