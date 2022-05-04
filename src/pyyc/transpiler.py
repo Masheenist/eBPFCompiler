@@ -1,11 +1,6 @@
 #!/usr/bin/python
-#P0 statement interpreter translates a .py into a .s
-#Rhett Hanscom and Sylvia Llosa
-
-# Rhett Notes:
- # *test3.py - too many Name type nodes possibly. Nodes 4 + 8 are the same in
- # the linked list, though this does reflect the number of Name() occurances
- # in the provided AST.
+#Python to C transpiler for eBPF
+#Rhett Hanscom, Ange Ischimwe, Sylvia Llosa, and Pranav Subramanian
 
 import sys
 import os
@@ -40,7 +35,7 @@ def print_python3_ast(ast, tabs=0):
 			for entry in ast.decorator_list:
 				print_python3_ast(entry, tabs = tabs+2)
 			print("\t"*(tabs+1) + "],")
-		# print returns (I believe this is type stuff? not relevant though)
+		# print returns
 		if ast.returns:
 			print("\t"*(tabs+1) + "returns=" + dump(ast.returns))
 		else:
@@ -171,7 +166,7 @@ def print_python3_ast(ast, tabs=0):
 		# just has s
 		print("\t"*tabs + dump(ast))
 	elif isinstance(ast, arg):
-		# has arg, and annotation (temporary hack if we can't figure out typing BUT if we bail on figuring out typing we need to at least do complicated types like [] {} and BPF maps)
+		# has arg, and annotation 
 		print("\t"*tabs + dump(ast))
 	elif isinstance(ast, Return):
 		# just has value
