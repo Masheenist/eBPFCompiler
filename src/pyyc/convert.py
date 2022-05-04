@@ -138,11 +138,11 @@ def convert_CIR(ast, inst_list, lambda_count):
 		print(("\t"+ dump(ast)))
 	return inst_list
 
-def check_for_def(name, inst_list):
+def check_for_def(name, inst_list, type):
 	for statement in inst_list:
-		if 'int {0} '.format(name) in statement:
+		if '{1} {0} '.format(name, type) in statement:
 			return True
-		elif 'int {0};'.format(name) in statement:
+		elif '{1} {0};'.format(name, type) in statement:
 			return True
 	return False
 
@@ -150,9 +150,10 @@ def handle_line(statement, file_lines, tabs):
 	print_string = "" + ("\t"*tabs)
 	needs_def = False
 	if statement[0] == 'ASSIGN':
-		needs_def = True if not check_for_def(statement[1].split(' = ')[0], file_lines) else False
+		type = something_from_dict
+		needs_def = True if not check_for_def(statement[1].split(' = ')[0], file_lines, type) else False
 		if needs_def:
-			print_string += "int "
+			print_string += "{0} ".format(type)
 	if statement[0] == 'IF':
 		print_string += "if ({0}){{\n".format(statement[1])
 		for condition in statement[2]:
