@@ -42,11 +42,11 @@ def udp_counter(ctx):
                     #counter.increment(value);
                     counter.increment(value) #anything going into a bpf map needs to be a u64
                     #bpf_trace_printk("recieved packet!\n");
-                    bpf_trace_printk("recieved packet!\n")
+                    bpf_trace_printk("received packet!\n")
                 #}
             #}
         #}
     #}
     #return XDP_PASS;
     return XDP_PASS
-}
+#}

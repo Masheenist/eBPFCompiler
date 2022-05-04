@@ -5,8 +5,8 @@ import sys
 
 
 ast_tree = compiler.parseFile("/home/jovyan/eBPFCompiler/tests/preliminary_ebpf_tests/basic_test1.py")
-print "\n_____________AST____________\n"
-print ast_tree
+print ("\n_____________AST____________\n")
+print (ast_tree)
 
 all_variables = {}
 all_functions = {}
@@ -104,7 +104,7 @@ def check_type(name, expr):
             for dic in all_functions:
                 if dic == expr.name:
                     def foo(x): #quick to enter function type
-                        print x
+                        print(x)
                     all_variables[name] = type(foo)
                     temp = dic
                     funcFound = True
@@ -161,7 +161,7 @@ def check_type(name, expr):
                     for dic in all_functions:
                         if dic == callType.name:
                             def foo(x): #quick to enter function type
-                                print x
+                                print(x)
                             all_variables[paramVariable] = type(foo)
                             funcFound = True
                     if funcFound == False:
@@ -258,10 +258,10 @@ def ast_print(ast)  :
     elif isinstance(ast, Function):
         #ast_print(ast.name)
         #ast_print(ast.argnames)
-        print ast.code
+        print(ast.code)
         ast_print(ast.code)
         def foo(x): #quick to enter function type
-            print x
+            print(x)
         all_variables[ast.name] = type(foo)
     elif isinstance(ast, CallFunc):
         ast_print(ast.node)
@@ -277,5 +277,5 @@ def ast_print(ast)  :
 
 
 ast_print(ast_tree)
-print "\n_____________TYPES____________\n"
-print all_variables
+print("\n_____________TYPES____________\n")
+print(all_variables)
