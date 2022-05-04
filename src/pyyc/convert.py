@@ -3,69 +3,90 @@ from ast import *
 from random import randint, randrange
 # global lam_count = 0
 
-def convert_CIR(ast, inst_list, lambda_count):
+def convert_CIR(ast, inst_list, lambda_count, nesting=0):
 	lambda_count = 0
 	if isinstance(ast, Module):
 		for entry in ast.body:
-			inst_list.append(convert_CIR(entry, inst_list, lambda_count))
+			inst_list.append(convert_CIR(entry, inst_list, lambda_count, nesting))
 	elif isinstance(ast, FunctionDef):
 		name = ast.name
-		func_args_list = convert_CIR(ast.args, inst_list, lambda_count)
+		func_args_list = convert_CIR(ast.args, inst_list, lambda_count, nesting)
 		func_body = []
 		for entry in ast.body:
-			func_body.append(convert_CIR(entry, inst_list, lambda_count))
+			func_body.append(convert_CIR(entry, inst_list, lambda_count, nesting+1))
 		return [name, func_args_list, func_body]
 	elif isinstance(ast, Tuple):
 		name = ast.name
-		elts_expr_list = convert_CIR(ast.expr, inst_list, lambda_count)
+		elts_expr_list = convert_CIR(ast.expr, inst_list, lambda_count, nesting)
 		elts_body = []
 		for entry in ast.body:
-			elts_body.append(convert_CIR(entry, inst_list, lambda_count))
-		return [name, elts_expr_list, elts_body]
+			elts_body.append(convert_CIR(entry, inst_list, lambda_count, nesting))
+		
+		#handle globals right by tagging them
+		if nesting == 0:
+			return ["!GLOBAL!", name, elts_expr_list, elts_body]
+		else:
+			return [name, elts_expr_list, elts_body]
 	elif isinstance(ast, Lambda):
 		# print("HERE!!!!")
 		unqiue_name = randint(10,99)
 		name = "lambda_{0}".format(str(unqiue_name))
 		lambda_count += 1
-		func_args_list = convert_CIR(ast.args, inst_list, lambda_count)
+		func_args_list = convert_CIR(ast.args, inst_list, lambda_count, nesting)
 		func_body = []
-		func_body.append(["RETURN", "return("+convert_CIR(ast.body, inst_list, lambda_count)+")"])
+		func_body.append(["RETURN", "return("+convert_CIR(ast.body, inst_list, lambda_count, nesting+1)+")"])
 		return [name, func_args_list, func_body]
 	elif isinstance(ast, Assign):
 		if len(ast.targets) != 0:
 			target_name = []
 			for entry in ast.targets:
-				target_name.append(convert_CIR(entry, inst_list, lambda_count))
+				target_name.append(convert_CIR(entry, inst_list, lambda_count, nesting))
 
 		# save func call
 		if isinstance(ast.value, Call):
 			use_target = ast.value.func.id
 			func_args_list = []
 			for entry in ast.value.args:
-				func_args_list.append(convert_CIR(entry, inst_list, lambda_count))
+				func_args_list.append(convert_CIR(entry, inst_list, lambda_count, nesting))
 			print_string = "{0}(".format(ast.value.func.id)
 			for argu in func_args_list:
 				print_string += argu
 				print_string += ", "
 			print_string = print_string[:-2]
 			print_string += ")"
-			return(["ASSIGN", target_name[-1], print_string])
+			# return(["ASSIGN", target_name[-1], print_string])
+			#handle globals right by tagging them
+			if nesting == 0:
+				return ["!GLOBAL!", "ASSIGN", target_name[-1], print_string]
+			else:
+				return ["ASSIGN", target_name[-1], print_string]
 
 		#save lambda call to var
 		elif isinstance(ast.value, Lambda):
-			use_target = convert_CIR(ast.value, inst_list, lambda_count)
-			return(["ASSIGN", target_name[-1], use_target])
+			use_target = convert_CIR(ast.value, inst_list, lambda_count, nesting)
+			# return(["ASSIGN", target_name[-1], use_target])
+			#handle globals right by tagging them
+			if nesting == 0:
+				return ["!GLOBAL!", "ASSIGN", target_name[-1], use_target]
+			else:
+				return ["ASSIGN", target_name[-1], use_target]
 
 		# general simple assignment (e.g., x = 1 + 2)
 		else:
 			use_target = ast.value
-		target_value = convert_CIR(use_target, inst_list, lambda_count)
+		target_value = convert_CIR(use_target, inst_list, lambda_count, nesting)
 		# return(["ASSIGN", "{} = {}".format(target_name[-1], target_value)])
-		return(["ASSIGN", "{0}".format(target_name[-1]), target_value])
+		# return(["ASSIGN", "{0}".format(target_name[-1]), target_value])
+
+		#handle globals right by tagging them
+		if nesting == 0:
+			return ["!GLOBAL!", "ASSIGN", target_name[-1], target_value]
+		else:
+			return ["ASSIGN", target_name[-1], target_value]
 	elif isinstance(ast, Expr):
 		if isinstance(ast.value, Call):
 			function_name = ast.value.func.id
-			function_arguments = convert_CIR(ast.value, inst_list, lambda_count)
+			function_arguments = convert_CIR(ast.value, inst_list, lambda_count, nesting)
 			print_string = "{0}(".format(function_name)
 			first = True
 			for argu in function_arguments:
@@ -75,12 +96,18 @@ def convert_CIR(ast, inst_list, lambda_count):
 					first = False
 					print_string += argu
 			print_string+=")"
-			return(["CALL", print_string])
+			# return(["CALL", print_string])
+
+			#handle globals right by tagging them
+			if nesting == 0:
+				return ["!GLOBAL!", "CALL", print_string]
+			else:
+				return ["CALL", print_string]
 		if isinstance(ast.value, Lambda):
-			return convert_CIR(ast.value, inst_list, lambda_count)
+			return convert_CIR(ast.value, inst_list, lambda_count, nesting)
 		if isinstance(ast.value, Load):
 			expression_name = ast.value.expr.id
-			expression_elts = convert_CIR(ast.value, inst_list, lambda_count)
+			expression_elts = convert_CIR(ast.value, inst_list, lambda_count, nesting)
 			print_string = "{0}(".format(expression_name)
 			first = True
 			for elts in expression_elts:
@@ -90,9 +117,15 @@ def convert_CIR(ast, inst_list, lambda_count):
 					first = False
 					print_string += elts
 			print_string+=")"
-			return(["LOAD", print_string])
+			# return(["LOAD", print_string])
+
+			#handle globals right by tagging them
+			if nesting == 0:
+				return ["!GLOBAL!", "LOAD", print_string]
+			else:
+				return ["LOAD", print_string]
 	elif isinstance(ast, BinOp):
-		left_exp = convert_CIR(ast.left, inst_list, lambda_count)
+		left_exp = convert_CIR(ast.left, inst_list, lambda_count, nesting)
 		binop_op = str(dump(ast.op))[:-2]
 		binop_sy  = ''
 		if binop_op == 'Add':
@@ -105,7 +138,7 @@ def convert_CIR(ast, inst_list, lambda_count):
 			binop_sy = '/'
 		else:
 			print("type = {0}".format(dump(ast.op)))
-		right_exp = convert_CIR(ast.right, inst_list, lambda_count)
+		right_exp = convert_CIR(ast.right, inst_list, lambda_count, nesting)
 		return("{} {} {}".format(left_exp, binop_sy, right_exp))
 	elif isinstance(ast, UnaryOp):
 		if isinstance(ast.operand, Constant):
@@ -116,7 +149,7 @@ def convert_CIR(ast, inst_list, lambda_count):
 		if len(ast.args) != 0:
 			call_args = []
 			for entry in ast.args:
-				call_args.append(convert_CIR(entry, inst_list, lambda_count))
+				call_args.append(convert_CIR(entry, inst_list, lambda_count, nesting))
 			return call_args
 	elif isinstance(ast, Name):
 		name_string = str(dump(ast)).split('\'')[1]
@@ -125,7 +158,7 @@ def convert_CIR(ast, inst_list, lambda_count):
 		if len(ast.args) != 0:
 			args_list = []
 			for entry in ast.args:
-				args_list.append(convert_CIR(entry, inst_list, lambda_count))
+				args_list.append(convert_CIR(entry, inst_list, lambda_count, nesting))
 			return args_list
 	elif isinstance(ast, Num):
 		const_num_list = re.findall(r'\d+', str(dump(ast)))
@@ -136,8 +169,8 @@ def convert_CIR(ast, inst_list, lambda_count):
 		return_string = str(dump(ast)).split('\'')
 		return return_string[1]
 	elif isinstance(ast, Return):
-		return ["RETURN", "return(" + str(convert_CIR(ast.value, inst_list, lambda_count))+")"]
-	elif isinstance(ast, Constant):
+		return ["RETURN", "return(" + str(convert_CIR(ast.value, inst_list, lambda_count, nesting))+")"]
+	elif isinstance(ast, NameConstant):
 		if ast.value == False:
 			return 0
 		elif ast.value == True:
@@ -156,9 +189,9 @@ def convert_CIR(ast, inst_list, lambda_count):
 		elif isinstance(ast.test.ops[0], LtE):
 			op_sym = "<="
 		elif isinstance(ast.test.ops[0], Eq):
-			op_sym = "!="
+			op_sym = "=="
 		elif isinstance(ast.test.ops[0], NotEq):
-			op_sym = "<="
+			op_sym = "!="
 		else:
 			print("op type {0}\nop {1}".format(type(ast.test.ops[0], ast.test.ops[0])))
 			# print("op dump {0}".format(dump(ast.test.ops)))
@@ -171,15 +204,39 @@ def convert_CIR(ast, inst_list, lambda_count):
 		elif isinstance(ast.test.comparators[0], Name):
 			right_side = ast.test.comparators[0].id
 
+		# get names defined in the if body, pull them out. i.e.
+		# if cond:
+		# 	a = 3
+		# else:
+		# 	b = 4
+
+		# BECOMES
+		# int a
+		# int b
+		# if (cond) {
+		# 	a = 3
+		# }
+		# else {
+		# 	b = 4
+		# }
+		novel_names = list(set(find_vars_defined_in_scope(ast.body) + find_vars_defined_in_scope(ast.orelse)))
+		prelim_defs = [["DEF", n] for n in novel_names]
+		print(prelim_defs)
 
 		then_body = []
 		for entry in ast.body:
-			then_body.append(convert_CIR(entry, inst_list, lambda_count))
+			then_body.append(convert_CIR(entry, inst_list, lambda_count, nesting))
 
 		else_body = []
 		for entry in ast.orelse:
-			else_body.append(convert_CIR(entry, inst_list, lambda_count))
-		return ["IF", '{0} {1} {2}'.format(left_side, op_sym, right_side), then_body, else_body]
+			else_body.append(convert_CIR(entry, inst_list, lambda_count, nesting))
+		# return ["IF", '{0} {1} {2}'.format(left_side, op_sym, right_side), then_body, else_body]
+
+		#handle globals right by tagging them
+		if nesting == 0:
+			return ["!GLOBAL!", "IF", prelim_defs, '{0} {1} {2}'.format(left_side, op_sym, right_side), then_body, else_body]
+		else:
+			return ["IF", prelim_defs, '{0} {1} {2}'.format(left_side, op_sym, right_side), then_body, else_body]
 	elif isinstance(ast, list):
 		for entry in ast:
 			try:
@@ -194,14 +251,22 @@ def convert_CIR(ast, inst_list, lambda_count):
 			# print("list :{0}".format(entry))
 	else:
 		print(("CONVERT UNCAUGHT TYPE " + str(type(ast).__name__)))
-		print(((ast)))
+		print(dump(ast))
 	return inst_list
 
-def check_for_def(name, inst_list, type):
+def find_vars_defined_in_scope(body):
+	names = []
+	for entry in body:
+		if isinstance(entry, Assign):
+			for targ in entry.targets:
+				names.append(targ.id)
+	return names
+
+def check_for_def(name, inst_list, typ):
 	for statement in inst_list:
-		if '{1} {0} '.format(name, type) in statement:
+		if '{1} {0} '.format(name, typ) in statement:
 			return True
-		elif '{1} {0};'.format(name, type) in statement:
+		elif '{1} {0};'.format(name, typ) in statement:
 			return True
 	return False
 
@@ -209,27 +274,38 @@ def handle_line(statement, file_lines, tabs):
 	print_string = "" + ("\t"*tabs)
 	needs_def = False
 	if statement[0] == 'ASSIGN':
-		type = 'int'
-		needs_def = True if not check_for_def(statement[1].split(' = ')[0], file_lines, type) else False
+		typ = 'int'
+		needs_def = True if not check_for_def(statement[1].split(' = ')[0], file_lines, typ) else False
 		if needs_def:
-			print_string += "{0} ".format(type)
-		print_string += statement[1]
+			print_string += "{0} ".format(typ)
+		print_string += str(statement[1])
 		print_string += " = "
-		print_string += statement[2]
+		print_string += str(statement[2])
 		print_string += ";"
 		# print("Can't add : {0}".format(statement[2]))
 	elif statement[0] == 'IF':
-		print_string += "if ({0}){{\n".format(statement[1])
-		for condition in statement[2]:
+		# add the defs
+		for temp_def in statement[1]:
+			typ = 'int'
+			needs_def = True if not check_for_def(temp_def[1], file_lines, typ) else False
+			if needs_def:
+				print_string += "{0} {1};\n".format(typ, temp_def[1]) + ("\t"*tabs)
+
+		# then the rest of the if
+		print_string += "if ({0}){{\n".format(statement[2])
+		for condition in statement[3]:
 			print_string += handle_line(condition, file_lines, tabs+1)
 		print_string += "\n"+ str("\t"*tabs) +"}"
-		if statement[3] != []:
+		if statement[4] != []:
 			print_string += " else {\n"
 			else_conditions = []
 			for condition in statement[3]:
 				print_string += handle_line(condition, file_lines, tabs+1)
 			print_string += "\n"+ str("\t"*tabs) +"}"
+	elif statement[0] == '!GLOBAL!':
+		return handle_line(statement[1:], file_lines, 0)
 	else:
+		# print("HERE", statement)
 		print_string += statement[1]
 		print_string += ";"
 		# if "return(" in print_string:
@@ -270,7 +346,20 @@ def move_lamdas(inst_list):
 	for i in range(len(statements_to_prepend)):
 		# print("INSERTING:{0}".format(statements_to_prepend[i]))
 		inst_list.insert(i, statements_to_prepend[i])
-	return inst_list
+	
+	# put globals first really quickly
+	final_list = []
+	for i in inst_list:
+		if '!GLOBAL!' in i:
+			final_list.append(i)
+	
+	for i in inst_list:
+		if not '!GLOBAL!' in i:
+			final_list.append(i)
+
+	print ("FUCK", final_list)
+
+	return final_list
 
 def convert_to_c(inst_list, filename):
 	file_lines = []
@@ -309,7 +398,8 @@ def convert_to_c(inst_list, filename):
 			tabs -= 1
 			file_lines.append("}")
 		else:
-			# print("flop", statement)
+			# THIS IS WHERE GLOBAL VARS AND STUFF END UP
+			print("flop", statement)
 			file_lines.append(handle_line(statement, file_lines, tabs))
 
 	with open(filename, 'w') as f:

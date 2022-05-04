@@ -198,14 +198,20 @@ def print_IRC(inst_list):
 def main():
 	with open(sys.argv[1], "r") as program_file:
 		file_text = program_file.read()
-		print('\nTest File [{1}]\n- - - - - - - -\n{0}- - - - - - - -'.format(file_text, sys.argv[1]))
+		# print('\nTest File [{1}]\n- - - - - - - -\n{0}- - - - - - - -'.format(file_text, sys.argv[1]))
 		ast = parse(file_text)#compiler.parse(file_text)
 		# print("ast:[{0}]".format(ast))
 		# print_python3_ast(ast)
-		# print(dump(ast))
+		print(dump(ast))
+		print("~~~~~~~~")
 		IRC = convert_CIR(ast, [], 0)
-		move_lamdas(IRC)
-		print_IRC(IRC)
+		IRC = move_lamdas(IRC)
+		print("--------")
+		for part in IRC:
+			print(part)
+		print("--------")
+
+		# print_IRC(IRC)
 		convert_to_c(IRC, sys.argv[1].replace('.py', '.c'))
 
 		f = open(sys.argv[1].replace('.py', '.c'), "r")
@@ -219,7 +225,7 @@ def main():
 	# print_expressions(first_expression)
 	# traverse_list(first_expression, sys.argv[1].replace(".py",".s"))
 
-# main()
+main()
 
 def transpile(filename):
 	with open(filename, "r") as program_file:
