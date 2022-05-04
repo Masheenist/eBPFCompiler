@@ -150,7 +150,8 @@ def handle_line(statement, file_lines, tabs):
 	print_string = "" + ("\t"*tabs)
 	needs_def = False
 	if statement[0] == 'ASSIGN':
-		type = something_from_dict
+		# type = something_from_dict
+		type = 'int'
 		needs_def = True if not check_for_def(statement[1].split(' = ')[0], file_lines, type) else False
 		if needs_def:
 			print_string += "{0} ".format(type)
