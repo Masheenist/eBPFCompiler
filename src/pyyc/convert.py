@@ -1,5 +1,7 @@
 import re
 from ast import *
+from random import randint, randrange
+# global lam_count = 0
 
 def convert_CIR(ast, inst_list, lambda_count):
 	lambda_count = 0
@@ -14,19 +16,45 @@ def convert_CIR(ast, inst_list, lambda_count):
 			func_body.append(convert_CIR(entry, inst_list, lambda_count))
 		return [name, func_args_list, func_body]
 	elif isinstance(ast, Lambda):
-		name = "lambda_{0}".format(lambda_count)
-		func_args_list = convert_CIR(ast.args, inst_list, lambda_count)
+		# print("HERE!!!!")
+		unqiue_name = randint(10,99)
+		name = "lambda_{0}".format(str(unqiue_name))
 		lambda_count += 1
+		func_args_list = convert_CIR(ast.args, inst_list, lambda_count)
 		func_body = []
-		func_body.append(["RETURN", convert_CIR(ast.body, inst_list, lambda_count)])
+		func_body.append(["RETURN", "return("+convert_CIR(ast.body, inst_list, lambda_count)+")"])
 		return [name, func_args_list, func_body]
 	elif isinstance(ast, Assign):
 		if len(ast.targets) != 0:
 			target_name = []
 			for entry in ast.targets:
 				target_name.append(convert_CIR(entry, inst_list, lambda_count))
-		target_value = convert_CIR(ast.value, inst_list, lambda_count)
-		return(["ASSIGN", "{} = {}".format(target_name[-1], target_value)])
+
+		# save func call
+		if isinstance(ast.value, Call):
+			use_target = ast.value.func.id
+			func_args_list = []
+			for entry in ast.value.args:
+				func_args_list.append(convert_CIR(entry, inst_list, lambda_count))
+			print_string = "{0}(".format(ast.value.func.id)
+			for argu in func_args_list:
+				print_string += argu
+				print_string += ", "
+			print_string = print_string[:-2]
+			print_string += ")"
+			return(["ASSIGN", target_name[-1], print_string])
+
+		#save lambda call to var
+		elif isinstance(ast.value, Lambda):
+			use_target = convert_CIR(ast.value, inst_list, lambda_count)
+			return(["ASSIGN", target_name[-1], use_target])
+
+		# general simple assignment (e.g., x = 1 + 2)
+		else:
+			use_target = ast.value
+		target_value = convert_CIR(use_target, inst_list, lambda_count)
+		# return(["ASSIGN", "{} = {}".format(target_name[-1], target_value)])
+		return(["ASSIGN", "{0}".format(target_name[-1]), target_value])
 	elif isinstance(ast, Expr):
 		if isinstance(ast.value, Call):
 			function_name = ast.value.func.id
@@ -83,12 +111,12 @@ def convert_CIR(ast, inst_list, lambda_count):
 		const_num_list = re.findall(r'\d+', str(dump(ast)))
 		return const_num_list[0]
 	elif isinstance(ast, Str):
-		return str("\"{0}\"".format(str(ast.value)[:-2]))
+		return str("\"{0}\"".format(str(ast.value)[:-1]))
 	elif isinstance(ast, arg):
 		return_string = str(dump(ast)).split('\'')
 		return return_string[1]
 	elif isinstance(ast, Return):
-		return ["RETURN", "return " + str(convert_CIR(ast.value, inst_list, lambda_count))]
+		return ["RETURN", "return(" + str(convert_CIR(ast.value, inst_list, lambda_count))+")"]
 	elif isinstance(ast, Constant):
 		if ast.value == False:
 			return 0
@@ -132,10 +160,21 @@ def convert_CIR(ast, inst_list, lambda_count):
 		for entry in ast.orelse:
 			else_body.append(convert_CIR(entry, inst_list, lambda_count))
 		return ["IF", '{0} {1} {2}'.format(left_side, op_sym, right_side), then_body, else_body]
-
+	elif isinstance(ast, list):
+		for entry in ast:
+			try:
+				return entry.value
+			except:
+				print("NO VALUE {0}".format((entry)))
+			# print("value :{0}".format(entry.value))
+	elif isinstance(ast, str):
+			return str(ast)
+		# print("str :{0}".format(ast))
+			# return ["IF", '{0} {1} {2}'.format(left_side, op_sym, right_side), then_body, else_body]
+			# print("list :{0}".format(entry))
 	else:
 		print(("CONVERT UNCAUGHT TYPE " + str(type(ast).__name__)))
-		print(("\t"+ dump(ast)))
+		print(((ast)))
 	return inst_list
 
 def check_for_def(name, inst_list, type):
@@ -150,12 +189,16 @@ def handle_line(statement, file_lines, tabs):
 	print_string = "" + ("\t"*tabs)
 	needs_def = False
 	if statement[0] == 'ASSIGN':
-		# type = something_from_dict
 		type = 'int'
 		needs_def = True if not check_for_def(statement[1].split(' = ')[0], file_lines, type) else False
 		if needs_def:
 			print_string += "{0} ".format(type)
-	if statement[0] == 'IF':
+		print_string += statement[1]
+		print_string += " = "
+		print_string += statement[2]
+		print_string += ";"
+		# print("Can't add : {0}".format(statement[2]))
+	elif statement[0] == 'IF':
 		print_string += "if ({0}){{\n".format(statement[1])
 		for condition in statement[2]:
 			print_string += handle_line(condition, file_lines, tabs+1)
@@ -169,9 +212,13 @@ def handle_line(statement, file_lines, tabs):
 	else:
 		print_string += statement[1]
 		print_string += ";"
-		if "return " in print_string:
+		if "return(" in print_string:
 			print_string += "\n"
 	return print_string
+
+# def add_main(file_lines):
+# 	for statement in file_lines:
+# 		for x in statement()
 
 def move_lamdas(inst_list):
 	statements_to_prepend = []
@@ -186,8 +233,20 @@ def move_lamdas(inst_list):
 					args_str = args_str[:-2]
 					statements_to_prepend.append(inst_list[k][2][i])
 					inst_list[k][2][i] = ["CALL",  "{0}({1})".format(inst_list[k][2][i][0], args_str)]
-					# "{0}({1})".format(inst_list[k][2][i][0], args_str)
-					# statements_to_prepend.append(inst_list[k][2][i])
+				else:
+					try:
+						if inst_list[k][2][i][2][0][:6] == 'lambda':
+							args = inst_list[k][2][i][2][1]
+							args_str = ""
+							for arg in args:
+								args_str += "int {0}".format(arg) + ", "
+							args_str = args_str[:-2]
+							statements_to_prepend.append(inst_list[k][2][i][2])
+							inst_list[k][2][i][2] = "{0}({1})".format(inst_list[k][2][i][2][0], args_str)
+					except:
+
+						continue
+
 	for i in range(len(statements_to_prepend)):
 		# print("INSERTING:{0}".format(statements_to_prepend[i]))
 		inst_list.insert(i, statements_to_prepend[i])
@@ -197,6 +256,7 @@ def convert_to_c(inst_list, filename):
 	file_lines = []
 	tabs = 0
 	for statement in inst_list:
+
 		if len(statement) == 3:
 			tabs += 1
 			func_call_str = "\nint {0}(".format(statement[0]) + str(["int {0}, ".format(x) for x in statement[1]] )[2:-4].replace("', '", "")+ "):"
