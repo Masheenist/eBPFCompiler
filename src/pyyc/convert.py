@@ -13,6 +13,13 @@ def convert_CIR(ast, inst_list, lambda_count):
 		for entry in ast.body:
 			func_body.append(convert_CIR(entry, inst_list, lambda_count))
 		return [name, func_args_list, func_body]
+	elif isinstance(ast, Tuple):
+		name = ast.name
+		elts_expr_list = convert_CIR(ast.expr, inst_list, lambda_count)
+		elts_body = []
+		for entry in ast.body:
+			elts_body.append(convert_CIR(entry, inst_list, lambda_count))
+		return [name, elts_expr_list, elts_body]
 	elif isinstance(ast, Lambda):
 		name = "lambda_{0}".format(lambda_count)
 		func_args_list = convert_CIR(ast.args, inst_list, lambda_count)
@@ -43,6 +50,19 @@ def convert_CIR(ast, inst_list, lambda_count):
 			return(["CALL", print_string])
 		if isinstance(ast.value, Lambda):
 			return convert_CIR(ast.value, inst_list, lambda_count)
+		if isinstance(ast.value, Load):
+			expression_name = ast.value.expr.id
+			expression_elts = convert_CIR(ast.value, inst_list, lambda_count)
+			print_string = "{0}(".format(expression_name)
+			first = True
+			for elts in expression_elts:
+				if not first:
+					print_string += ", {0}".format(expr)
+				else:
+					first = False
+					print_string += elts
+			print_string+=")"
+			return(["LOAD", print_string])
 	elif isinstance(ast, BinOp):
 		left_exp = convert_CIR(ast.left, inst_list, lambda_count)
 		binop_op = str(dump(ast.op))[:-2]
