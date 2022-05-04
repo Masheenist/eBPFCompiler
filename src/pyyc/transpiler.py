@@ -176,7 +176,7 @@ def print_python3_ast(ast, tabs=0):
 	elif isinstance(ast, Return):
 		# just has value
 		print("\t"*tabs + dump(ast))
-	
+
 	elif isinstance(ast, Constant):
 		print("\t"*tabs + dump(ast))
 	else:
