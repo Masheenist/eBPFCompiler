@@ -219,4 +219,22 @@ def main():
 	# print_expressions(first_expression)
 	# traverse_list(first_expression, sys.argv[1].replace(".py",".s"))
 
-main()
+# main()
+
+def transpile(filename):
+	with open(filename, "r") as program_file:
+		file_text = program_file.read()
+		# print('\nTest File [{1}]\n- - - - - - - -\n{0}- - - - - - - -'.format(file_text, sys.argv[1]))
+		ast = parse(file_text)#compiler.parse(file_text)
+		# print("ast:[{0}]".format(ast))
+		# print_python3_ast(ast)
+		# print(dump(ast))
+		IRC = convert_CIR(ast, [], 0)
+		move_lamdas(IRC)
+		print_IRC(IRC)
+		file_lines = convert_to_c(IRC, filename.replace('.py', '.c'))
+
+		#f = open(filename.replace('.py', '.c'), "r")
+		print("\n\nC FILE CREATED:\n\n{0}\n".format("\n".join(file_lines)))
+		return "\n".join(file_lines)
+

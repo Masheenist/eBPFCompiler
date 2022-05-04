@@ -47,7 +47,7 @@
 # )
 
 # a = 3 + 3
-def basic_test(ctx):
+def test(ctx):
     # c = -a
     # b = 1 + 2
     # c = bpf_trace_printk("recieved packet!\n", 3)
@@ -56,8 +56,9 @@ def basic_test(ctx):
     #     d = True
     # else:
     #     d = False
-    lambda z : z*2
-    z = lambda x, y: (x + y)/ 4
+    # lambda z : z*2
+    # z = lambda x, y: (x + y)/ 4
+    bpf_trace_printk("recieved packet!\n")
     return XDP_DROP
 
 # Module(

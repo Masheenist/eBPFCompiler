@@ -131,7 +131,7 @@ def convert_CIR(ast, inst_list, lambda_count):
 		const_num_list = re.findall(r'\d+', str(dump(ast)))
 		return const_num_list[0]
 	elif isinstance(ast, Str):
-		return str("\"{0}\"".format(str(ast.value)[:-1]))
+		return str("\"{0}\"".format(str(ast.s)[:-1]))
 	elif isinstance(ast, arg):
 		return_string = str(dump(ast)).split('\'')
 		return return_string[1]
@@ -232,8 +232,8 @@ def handle_line(statement, file_lines, tabs):
 	else:
 		print_string += statement[1]
 		print_string += ";"
-		if "return(" in print_string:
-			print_string += "\n"
+		# if "return(" in print_string:
+		# 	print_string += "\n"
 	return print_string
 
 # def add_main(file_lines):
@@ -275,17 +275,41 @@ def move_lamdas(inst_list):
 def convert_to_c(inst_list, filename):
 	file_lines = []
 	tabs = 0
+	# print("inst list", inst_list)
+
+	# make header
+	file_lines.append("#define KBUILD_MODNAME \"{0}\"\n#include <linux/bpf.h>\n#include <linux/if_ether.h>\n#include <linux/ip.h>\n#include <linux/udp.h>\n\n".format(filename.replace(".c", "").replace(".py", "")))
+
 	for statement in inst_list:
+		print(statement)
 
 		if len(statement) == 3:
+			# print ("here", statement)
 			tabs += 1
-			func_call_str = "\nint {0}(".format(statement[0]) + str(["int {0}, ".format(x) for x in statement[1]] )[2:-4].replace("', '", "")+ "):"
+			# func_call_str = "\nint {0}(".format(statement[0]) + str(["int {0}, ".format(x) for x in statement[1]] )[2:-4].replace("', '", "")+ "):"
+			
+			# TODO: INTEGRATE TYPES HERE
+			# handle func header
+			func_call_str = "int {0}(".format(statement[0])
+			arguments = ""
+			if len(statement[1]) == 1 and statement[1][0] == "ctx": # very specific parameter that requires special handling
+				arguments = "struct xdp_md* ctx"
+			else:
+				arguments = str(["int {0}, ".format(x) for x in statement[1]] )[2:-4].replace("', '", "")
+
+			func_call_str += arguments
+			func_call_str += ") {"
+
+
+
 			# print(func_call_str)
 			file_lines.append(func_call_str)
 			for body_line in statement[2]:
 				file_lines.append(handle_line(body_line, file_lines, tabs))
 			tabs -= 1
+			file_lines.append("}")
 		else:
+			# print("flop", statement)
 			file_lines.append(handle_line(statement, file_lines, tabs))
 
 	with open(filename, 'w') as f:
