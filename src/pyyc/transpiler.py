@@ -202,7 +202,9 @@ def main():
 		ast = parse(file_text)#compiler.parse(file_text)
 		# print("ast:[{0}]".format(ast))
 		# print_python3_ast(ast)
-		print(dump(ast))
+
+		# REQUIRES PYTHON 3.9
+		# print(dump(ast, indent=4))
 		print("~~~~~~~~")
 		IRC = convert_CIR(ast, [], 0)
 		IRC = move_lamdas(IRC)

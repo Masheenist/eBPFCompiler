@@ -12,7 +12,7 @@ counter = BPF_HISTOGRAM()
 #{
 def udp_counter(ctx):
     #void *data = (void *)(long)ctx->data;
-    data = ctx.data # treated as a keyword
+    data = ctx.data
     #void *data_end = (void *)(long)ctx->data_end; <-- implied by use of ctx struct
 
     #struct ethhdr *eth = data;
@@ -49,4 +49,4 @@ def udp_counter(ctx):
     #}
     #return XDP_PASS;
     return XDP_PASS
-}
+

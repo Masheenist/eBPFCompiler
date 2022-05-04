@@ -46,15 +46,16 @@
 #     ]
 # )
 
-a = 3 + 3
-q = 72
-d = 7
+# a = 3 + 3
+# q = 72
+# d = 7
 # if a:
 #     q = 72
 # else:
 #     q = 25
 def test(ctx):
-    c = -a
+    # c = -a <-- global variables not allowed hahaha
+    c = 3
     b = 1 + 2
     # c = bpf_trace_printk("recieved packet!\n", 3)
     # d = False
@@ -63,7 +64,7 @@ def test(ctx):
     else:
         d = False
     # lambda z : z*2
-    z = lambda x, y: (x + y)/ 4
+    # z = lambda x, y: (x + y)/ 4
     bpf_trace_printk("recieved packet!\n")
     return XDP_DROP
 
