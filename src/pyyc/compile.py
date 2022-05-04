@@ -318,7 +318,7 @@ def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_s
 
 
 	elif nodeSupplied.type == "Add":
-		#firt case, variable is location on stack, second case it is a constant. So check location dict, else grab value.
+		#first case, variable is location on stack, second case it is a constant. So check location dict, else grab value.
 		if variableLocations.has_key(nodeSupplied.input1):
 			left_side = variableLocations[nodeSupplied.input1]
 		elif variableLocations.has_key(get_value(nodeSupplied, nodeSupplied.input1)):
@@ -338,8 +338,6 @@ def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_s
 				right_side = '$' + str(get_value(nodeSupplied, nodeSupplied.input2))
 			else:
 				right_side = variableLocations[get_value(nodeSupplied, nodeSupplied.input2)]
-
-
 
 		start_stack_allocation += 4
 		stack_offset += 4
@@ -375,7 +373,6 @@ def convertNodeToAssembly(nodeSupplied, variableLocations, stack_offset, start_s
 		returnValue = "\taddl ${0}, %esp\n\tmovl $0, %eax\n\tleave\n\tret\n".format(stack_offset)
 
 	return returnValue, stack_offset, start_stack_allocation
-
 
 
 

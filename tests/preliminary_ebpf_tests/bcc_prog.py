@@ -3,12 +3,12 @@ from bcc.utils import printb
 
 device = "eth1" 
 
-# special_str = custom_transpile('basic_test.py') #produces string
+special_str = custom_transpile('basic_test.py') #produces string
 
 # b = BPF(src_file="udp_counter.c") 
 # fn = b.load_func("udp_counter", BPF.XDP) 
-b = BPF(src_file="basic_test.c") 
-# b = BPF(special_str)
+# b = BPF(src_file="basic_test.c") 
+b = BPF(special_str)
 fn = b.load_func("basic_test", BPF.XDP) 
 b.attach_xdp(device, fn, 0) 
 

@@ -4,6 +4,7 @@
 #include <linux/ip.h>
 #include <linux/udp.h>
 
+// counter = BPF_Histogram()
 BPF_HISTOGRAM(counter, u64);
 
 int udp_counter(struct xdp_md *ctx)
